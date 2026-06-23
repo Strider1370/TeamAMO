@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>퇴원 소견서 (가상 샘플)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #d9d7d0;
+    font-family: "Batang", "바탕", "Malgun Gothic", serif;
+    color: #111;
+    padding: 28px;
+  }
+  .sheet {
+    width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #999;
+    padding: 40px 44px 48px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .hospital {
+    text-align: center;
+    border-bottom: 2px solid #222;
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+  }
+  .hospital .name { font-size: 22px; font-weight: 700; letter-spacing: 4px; }
+  .hospital .dept { font-size: 13px; color: #555; margin-top: 4px; letter-spacing: 1px; }
+  h1 {
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 14px;
+    margin: 22px 0 6px;
+    padding-left: 14px;
+  }
+  .docno { text-align: right; font-size: 12px; color: #555; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { border: 1px solid #555; padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #f0efe9; width: 120px; font-weight: 700; white-space: nowrap; }
+  .section-title { font-size: 15px; font-weight: 700; margin: 22px 0 8px; border-left: 4px solid #222; padding-left: 8px; }
+  .opinion { font-size: 14px; line-height: 1.9; border: 1px solid #555; padding: 14px 16px; min-height: 110px; }
+  .opinion p { margin: 0 0 8px; }
+  .footer { margin-top: 30px; text-align: center; font-size: 14px; line-height: 2; }
+  .footer .date { letter-spacing: 2px; }
+  .footer .sign { margin-top: 10px; font-size: 15px; }
+  .footer .sign .doc { font-weight: 700; letter-spacing: 3px; }
+  .stamp {
+    display: inline-block; margin-left: 8px;
+    width: 46px; height: 46px; line-height: 46px; text-align: center;
+    border: 2px solid #b22; color: #b22; border-radius: 50%;
+    font-size: 12px; transform: rotate(-12deg); vertical-align: middle;
+  }
+  .watermark { text-align:center; font-size:11px; color:#999; margin-top:18px; letter-spacing:2px; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="hospital">
+      <div class="name">○○대학교병원</div>
+      <div class="dept">신경과 / 재활의학과</div>
+    </div>
+
+    <h1>퇴원소견서</h1>
+    <div class="docno">문서번호: 2026-DC-04827 (가상 샘플)</div>
+
+    <table>
+      <tr><th>환자 성명</th><td>홍길동 (가명)</td><th>성별 / 나이</th><td>남 / 72세</td></tr>
+      <tr><th>등록번호</th><td>00-000000</td><th>병   동</th><td>본관 7층 71병동</td></tr>
+      <tr><th>입원일</th><td>2026-05-28</td><th>퇴원(예정)일</th><td>2026-06-25</td></tr>
+      <tr><th>진단명</th><td colspan="3">뇌경색, 좌측 편마비 (Cerebral infarction with left hemiplegia)</td></tr>
+    </table>
+
+    <div class="section-title">치료 경과 및 소견</div>
+    <div class="opinion">
+      <p>상기 환자는 2026년 5월 28일 급성 뇌경색으로 응급실 경유 입원하여 약물치료 및 재활치료를 받았습니다.</p>
+      <p>현재 좌측 상·하지 위약(편마비)이 남아 있어 보행 및 식사·세면 등 일상생활동작(ADL)에 타인의 도움이 필요한 상태입니다.</p>
+      <p>퇴원 후에도 지속적인 재활치료와 가정 내 돌봄이 요구되며, 보행보조기 등 보조기기 사용이 권고됩니다.</p>
+      <p>장기적인 후유장애가 예상되어 장애 정도 평가 및 등록 상담을 권유드립니다.</p>
+    </div>
+
+    <div class="section-title">향후 계획</div>
+    <div class="opinion">
+      <p>· 외래 추적관찰 (신경과 2주 후, 재활의학과 4주 후)</p>
+      <p>· 가정 내 재활 및 일상생활 보조 필요, 낙상 주의</p>
+      <p>· 필요 시 재가 돌봄·요양 서비스 연계 권고</p>
+    </div>
+
+    <div class="footer">
+      <div class="date">2026 년  06 월  23 일</div>
+      <div class="sign">
+        ○○대학교병원 신경과
+        <span class="doc">전문의  김의사 (가명)</span>
+        <span class="stamp">직인</span>
+      </div>
+    </div>
+
+    <div class="watermark">— 본 문서는 데모용 가상 샘플이며 실제 환자정보가 아닙니다 —</div>
+  </div>
+</body>
+</html>

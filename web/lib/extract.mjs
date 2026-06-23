@@ -86,6 +86,42 @@ export async function llmExtract(text, { apiKey, model }) {
   return { ...sanitize(JSON.parse(raw)), via: 'llm', model };
 }
 
+/** 비전 추출 (서류 사진 → 신호). dataUrl = "data:image/...;base64,..." */
+export async function visionExtract(dataUrl, { apiKey, model }) {
+  if (!apiKey) return null;
+  if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+    throw new Error('invalid image data url');
+  }
+  const isNewGen = /^(gpt-5|o\d)/.test(model || '');
+  const body = {
+    model,
+    messages: [
+      { role: 'system', content: SYSTEM },
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: '이 의료/복지 서류 이미지에서 신호만 추출해 JSON으로 반환해라. 보이는 내용에 명시·강하게 암시된 신호만 — 환각 금지.' },
+          { type: 'image_url', image_url: { url: dataUrl } },
+        ],
+      },
+    ],
+    response_format: { type: 'json_object' },
+  };
+  if (isNewGen) { body.max_completion_tokens = 3000; body.reasoning_effort = 'low'; }
+  else { body.max_tokens = 600; body.temperature = 0; }
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!res.ok) throw new Error(`openai ${res.status}`);
+  const data = await res.json();
+  const raw = data?.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('empty');
+  return { ...sanitize(JSON.parse(raw)), via: 'vision', model };
+}
+
 function mergeSlots(a, b) {
   const out = {};
   for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) {
@@ -99,6 +135,18 @@ function mergeSlots(a, b) {
     if (arr.length) out[key] = arr.length === 1 ? arr[0] : arr;
   }
   return out;
+}
+
+/** 두 신호 객체 병합 — situations 합집합 · slots mergeSlots · primaryConcern는 a 우선(없으면 b). */
+export function mergeSignals(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  return {
+    situations: [...new Set([...(a.situations || []), ...(b.situations || [])])],
+    slots: mergeSlots(a.slots || {}, b.slots || {}),
+    primaryConcern: a.primaryConcern ?? b.primaryConcern ?? null,
+    via: [a.via, b.via].filter(Boolean).join('+'),
+  };
 }
 
 /** 통합 진입점 — 키워드(바닥) ∪ LLM(이해·뉘앙스). 좋은 모델도 놓치는 명시 신호를 키워드가 보장. */

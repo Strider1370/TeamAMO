@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 
 type Card = {
   id: string; name: string; agency?: string; phone?: string | null; badge: string;
@@ -40,19 +40,35 @@ export default function Home() {
 
   useEffect(() => { setApiKey(localStorage.getItem('openai_key') || ''); }, []);
 
-  async function run() {
-    if (!text.trim()) return;
+  // 공통 호출 — 텍스트/이미지 어느 쪽이든 같은 결과 렌더링(setData) 재사용.
+  async function callMatch(payload: { text?: string; region?: string; image?: string }) {
     setLoading(true); setErr(''); setData(null); setExpanded({});
     try {
       const res = await fetch('/api/match', {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...(apiKey ? { 'x-openai-key': apiKey } : {}) },
-        body: JSON.stringify({ text, region }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('요청 실패 (' + res.status + ')');
       setData(await res.json());
     } catch (e: any) { setErr(e.message || '오류'); }
     finally { setLoading(false); }
+  }
+
+  async function run() {
+    if (!text.trim()) return;
+    await callMatch({ text, region });
+  }
+
+  // 📷 서류 사진 → dataURL → /api/match {image}. 기존 결과 렌더링 그대로 재사용.
+  function onPhoto(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // 같은 파일 재선택 허용
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onerror = () => setErr('사진을 읽지 못했어요. 다시 시도해 주세요.');
+    reader.onload = () => { void callMatch({ image: String(reader.result), region }); };
+    reader.readAsDataURL(file);
   }
 
   const slotChips = data ? slotsToChips(data.signals) : [];
@@ -82,6 +98,18 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '4px 0 2px' }}>
+        <span style={{ flex: 1, height: 0.5, background: 'rgba(0,0,0,0.12)' }} />
+        <span style={{ fontSize: 11, color: C.ter }}>또는</span>
+        <span style={{ flex: 1, height: 0.5, background: 'rgba(0,0,0,0.12)' }} />
+      </div>
+      <label style={{ display: 'block', margin: '8px 0 10px' }}>
+        <input type="file" accept="image/*" capture="environment" onChange={onPhoto} disabled={loading} style={{ display: 'none' }} />
+        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, height: 42, fontSize: 14, color: C.sec, border: C.border2, borderRadius: 8, cursor: loading ? 'default' : 'pointer', background: '#f5f4ef' }}>
+          📷 서류 사진으로 (진단서·영수증)
+        </span>
+      </label>
 
       <select value={region} onChange={(e) => setRegion(e.target.value)} style={{ width: '100%', margin: '6px 0 12px', padding: 8, border: C.border2, borderRadius: 8 }}>
         <option value="">지역 선택 (선택사항)</option>
