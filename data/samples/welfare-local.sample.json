@@ -1,0 +1,44 @@
+[
+  {
+    "servId": "WLF00002035",
+    "servNm": "출산·육아용품 대여 사업",
+    "servDgst": "출산 후 출산 양육에 필요한 용품을 지원(대여)",
+    "jurMnofNm": "",
+    "jurOrgNm": "",
+    "ctpvNm": "강원특별자치도",
+    "sgguNm": "",
+    "servDtlLink": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00002035&amp;wlfareInfoReldBztpCd=02",
+    "aplyMtdNm": "방문",
+    "lifeArray": "",
+    "trgterIndvdlArray": "",
+    "intrsThemaArray": ""
+  },
+  {
+    "servId": "WLF00002034",
+    "servNm": "임신·출산축하용품 지원 사업",
+    "servDgst": "임신 출산을 축하하고, 임산부와 영아의 건강관리 및 양육에 도움을 주기 위하여 용품 지원",
+    "jurMnofNm": "",
+    "jurOrgNm": "",
+    "ctpvNm": "강원특별자치도",
+    "sgguNm": "",
+    "servDtlLink": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00002034&amp;wlfareInfoReldBztpCd=02",
+    "aplyMtdNm": "방문",
+    "lifeArray": "",
+    "trgterIndvdlArray": "",
+    "intrsThemaArray": ""
+  },
+  {
+    "servId": "WLF00003982",
+    "servNm": "신혼부부 주택 매입.전세자금 대출이자 지원 안내",
+    "servDgst": "신혼부부 가구에게 대출이자 지원을 통해 울주군 조기정착 및 인구유입에 기여하고자 함.",
+    "jurMnofNm": "",
+    "jurOrgNm": "",
+    "ctpvNm": "울산광역시",
+    "sgguNm": "",
+    "servDtlLink": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00003982&amp;wlfareInfoReldBztpCd=02",
+    "aplyMtdNm": "인터넷",
+    "lifeArray": "",
+    "trgterIndvdlArray": "",
+    "intrsThemaArray": ""
+  }
+]

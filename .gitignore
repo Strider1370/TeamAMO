@@ -1,1 +1,55 @@
-.claude/
+# Dependencies
+node_modules/
+
+# Local inspection clones
+.repo-inspect/
+
+# Runtime MCP and secrets
+.mcp.json
+*.mcp.local.json
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Codex/local runtime state
+.codex/cache/
+.codex/logs/
+.codex/sessions/
+.codex/tmp/
+
+# Claude/local runtime state
+.claude/settings.local.json
+.claude/cache/
+.claude/logs/
+
+# code-review-graph generated state
+.code-review-graph/
+.crg/
+code-review-graph.db
+*.crg.db
+
+# Playwright generated artifacts
+test-results/
+playwright-report/
+blob-report/
+*.trace.zip
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 발표 레퍼런스 캡처 — 스크린샷은 재생성 가능(서드파티 렌더)이라 로컬 보관
+presentation/slidev/reference-capture/shots/
+
+# Slidev 빌드 산출물 (빌드는 로컬에서 재생성)
+presentation/slidev/dist/
+presentation/slidev/dist-presets/
+# 발표 생성 런타임 산출물 (deck.json/slides.md 는 Stage 09 실행 시 생성)
+presentation/output/
+
+# 공공데이터 전수 스냅샷: data/snapshots/ 는 무키 데모를 위해 저장소에 커밋한다(gov24 10,957 + 복지 5,021건).
+# 재생성은 data/scripts/dump-*.mjs (DATA_GO_KR_KEY 필요).

@@ -1,0 +1,30 @@
+{
+  "name": "hackathon-kit-by-hand",
+  "version": "1.0.0",
+  "private": true,
+  "description": "한국 공공 서비스 해커톤 키트 (손으로 운전 — 체크리스트 + 참고 라이브러리 + 빈 스캐폴드)",
+  "type": "module",
+  "scripts": {
+    "presentation:scenes": "node presentation/generator/generate-scenes.mjs",
+    "presentation:layouts": "node presentation/generator/select-layouts.mjs",
+    "presentation:slidev": "node presentation/generator/generate-slidev.mjs",
+    "presentation:capture": "node presentation/generator/capture.mjs",
+    "presentation:pdf": "node presentation/generator/make-pdf.mjs",
+    "presentation:validate-deck": "node presentation/generator/validate-deck.mjs",
+    "presentation:validate-slides": "node presentation/generator/validate-slides.mjs",
+    "presentation:build": "npm run presentation:validate-deck && npm run presentation:slidev && npm run presentation:validate-slides",
+    "presentation:gallery": "node presentation/generator/make-gallery.mjs && npm run presentation:build",
+
+    "web:build": "npm --prefix web run build",
+    "web:check-identity": "node web/scripts/check-identity.mjs",
+    "web:lint": "npm --prefix web run lint",
+    "web:dev": "npm --prefix web run dev",
+    "generate-banner": "node scripts/generate-banner.mjs"
+  },
+  "engines": {
+    "node": ">=18.18"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

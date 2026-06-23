@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "web", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "slidev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["presentation/serve-static.mjs", "presentation/slidev/dist", "3030", "spa"],
+      "port": 3030
+    }
+  ]
+}

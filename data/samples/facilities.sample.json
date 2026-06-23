@@ -1,0 +1,44 @@
+[
+  {
+    "id": "C0000003362",
+    "name": "강원동부아동보호전문기관",
+    "typeCode": "020113",
+    "corp": "재단법인 강원특별자치도 사회서비스원",
+    "address": "강원특별자치도 강릉시 하평길",
+    "sido": "강원특별자치도",
+    "sigungu": "강릉시",
+    "zip": "25568",
+    "phone": "0336441391",
+    "sggCode": "5100000000",
+    "sourceName": "전국사회복지시설표준데이터",
+    "sourceUrl": "https://www.data.go.kr/data/15096296/standard.do",
+    "asOf": "2026-06-20"
+  },
+  {
+    "id": "C0000006284",
+    "name": "서울정****",
+    "typeCode": "040211",
+    "address": "",
+    "sido": "",
+    "sigungu": "",
+    "sggCode": "1111000000",
+    "sourceName": "전국사회복지시설표준데이터",
+    "sourceUrl": "https://www.data.go.kr/data/15096296/standard.do",
+    "asOf": "2026-06-20"
+  },
+  {
+    "id": "C0000006298",
+    "name": "문혜장애인요양원",
+    "typeCode": "030105",
+    "corp": "성람재단",
+    "address": "강원도 철원군 갈말읍 텃골1길",
+    "sido": "강원도",
+    "sigungu": "철원군",
+    "zip": "24030",
+    "phone": "0334527881",
+    "sggCode": "1111000000",
+    "sourceName": "전국사회복지시설표준데이터",
+    "sourceUrl": "https://www.data.go.kr/data/15096296/standard.do",
+    "asOf": "2026-06-20"
+  }
+]
