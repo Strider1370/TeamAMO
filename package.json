@@ -14,7 +14,6 @@
     "presentation:validate-slides": "node presentation/generator/validate-slides.mjs",
     "presentation:build": "npm run presentation:validate-deck && npm run presentation:slidev && npm run presentation:validate-slides",
     "presentation:gallery": "node presentation/generator/make-gallery.mjs && npm run presentation:build",
-
     "web:build": "npm --prefix web run build",
     "web:check-identity": "node web/scripts/check-identity.mjs",
     "web:lint": "npm --prefix web run lint",
@@ -26,5 +25,8 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
   }
 }

@@ -13,9 +13,11 @@ console.log('1) 입력화면 저장');
 
 await p.fill('textarea', TEXT);
 await p.getByRole('button', { name: /정리해줘/ }).click();
-await p.getByText('오늘 할 일', { exact: false }).waitFor({ timeout: 45000 });
+await p.getByText(/가지를 찾았어요/).waitFor({ timeout: 45000 });
 await p.waitForTimeout(1500);
-await p.screenshot({ path: 'design/mockups/shot-02-result.png', fullPage: true });
+await p.getByText(/가지를 찾았어요/).scrollIntoViewIfNeeded();
+await p.screenshot({ path: 'design/mockups/shot-02-result.png' });
+await p.screenshot({ path: 'design/mockups/shot-03-result-full.png', fullPage: true });
 console.log('2) 결과화면 저장');
 
 await b.close();
