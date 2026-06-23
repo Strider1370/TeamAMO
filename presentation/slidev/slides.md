@@ -347,7 +347,7 @@ impl: "mocked"
       <span font-bold text-xl>지금</span>
     </div>
     <div px-4 py-4 flex flex-col gap-1>
-      <div text-base opacity-80>부모 돌봄 — 한 문장이 오늘 할 일로 (작동)</div>
+      <div text-base opacity-80>부모 돌봄 — 한 문장, 또는 서류 사진 한 장이 오늘 할 일로 (작동)</div>
     </div>
   </div>
 
@@ -356,7 +356,7 @@ impl: "mocked"
       <span font-bold text-xl>곧</span>
     </div>
     <div px-4 py-4 flex flex-col gap-1>
-      <div text-base opacity-80>서류 사진 입력 · 가까운 기관 길찾기 · 가족 공유 (개발 중)</div>
+      <div text-base opacity-80>가까운 기관 길찾기 · 가족 공유 · 기한 알림 (개발 중)</div>
     </div>
   </div>
 
