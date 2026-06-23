@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 type Card = {
   id: string; name: string; agency?: string; phone?: string | null; badge: string;
@@ -27,21 +27,16 @@ export default function Home() {
   const [text, setText] = useState('');
   const [photo, setPhoto] = useState<{ url: string; name: string } | null>(null);
   const [region, setRegion] = useState('');
-  const [apiKey, setApiKey] = useState('');
-  const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<{ signals: Signals; result: Result } | null>(null);
   const [err, setErr] = useState('');
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-
-  useEffect(() => { setApiKey(localStorage.getItem('openai_key') || ''); }, []);
 
   async function callMatch(payload: { text?: string; region?: string; image?: string }) {
-    setLoading(true); setErr(''); setData(null); setExpanded({});
+    setLoading(true); setErr(''); setData(null);
     try {
       const res = await fetch('/api/match', {
         method: 'POST',
-        headers: { 'content-type': 'application/json', ...(apiKey ? { 'x-openai-key': apiKey } : {}) },
+        headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('요청에 실패했어요 (' + res.status + ')');
@@ -67,18 +62,15 @@ export default function Home() {
   }
 
   const canSubmit = !loading && (!!photo || !!text.trim());
-  const total = data ? Object.values(data.result.timeline).reduce((n, a) => n + a.length, 0) : 0;
 
   return (
     <main className="mx-auto max-w-2xl px-4 pb-20">
       {/* Hero — 모바일 컴팩트, 핵심 입력을 첫 화면에 */}
       <section className="pt-6 md:pt-10">
         <p className="text-label-m font-bold text-primary">가족 복지·돌봄 내비게이터</p>
-        <h1 className="mt-1.5 break-keep text-heading-m font-bold text-gray-90 md:text-display-s">
-          부모님이 갑자기 아프시면, 누구나 처음입니다
-        </h1>
+        <h1 className="mt-1.5 break-keep text-display-s font-bold text-gray-90 md:text-display-m">첫걸음</h1>
         <p className="mt-2 break-keep text-body-m text-gray-70">
-          무엇부터 해야 할지 막막한 그 순간 — 상황을 편하게 적어주세요.
+          누구나 맞이하는 처음을 위한, 당신에게 드리는 정책 가이드 플랫폼
         </p>
       </section>
 
@@ -140,12 +132,6 @@ export default function Home() {
           className="mt-3 h-12 w-full rounded-krds bg-primary text-title-s font-bold text-white transition-colors hover:bg-primary-60 disabled:bg-gray-30 disabled:text-gray-50">
           {loading ? '상황을 이해하는 중…' : '오늘 할 일로 정리해 드릴게요'}
         </button>
-
-        <div className="mt-2.5 text-center">
-          <button onClick={() => setModal(true)} className="text-detail-s text-gray-50 underline underline-offset-2 hover:text-gray-70">
-            API 키 설정 (선택)
-          </button>
-        </div>
       </section>
 
       {err && (
@@ -157,7 +143,7 @@ export default function Home() {
         <section className="mt-7" aria-live="polite">
           <h2 className="text-heading-s font-bold text-gray-90">오늘 할 일을 정리했어요</h2>
           <p className="mt-1 break-keep text-body-s text-gray-60">
-            관련도 높은 순 · 핵심 먼저. 자격은 <b className="font-bold text-gray-80">받을 가능성</b>이며 공식 링크로 꼭 확인하세요.
+            관련도·시급도 높은 순. 자격은 <b className="font-bold text-gray-80">받을 가능성</b>이며 공식 링크로 꼭 확인하세요.
             {data.signals.via === 'keyword' ? ' (키워드 모드)' : ''}
           </p>
 
@@ -174,9 +160,6 @@ export default function Home() {
           {BUCKETS.map((bk) => {
             const cards = data.result.timeline[bk.key] || [];
             if (!cards.length) return null;
-            const open = expanded[bk.key];
-            const shown = open ? cards : cards.filter((c) => c.core);
-            const hidden = cards.length - shown.length;
             return (
               <div key={bk.key} className="mt-6">
                 <div className="flex items-center gap-2">
@@ -185,38 +168,12 @@ export default function Home() {
                   <span className="text-detail-s text-gray-50">{bk.sub}</span>
                 </div>
                 <div className="mt-2.5 space-y-2.5">
-                  {shown.map((c) => <ProgramCard key={c.id} c={c} />)}
+                  {cards.map((c) => <ProgramCard key={c.id} c={c} />)}
                 </div>
-                {hidden > 0 && (
-                  <button onClick={() => setExpanded((e) => ({ ...e, [bk.key]: true }))}
-                    className="mt-2.5 h-10 w-full rounded-krds border border-gray-20 text-label-m text-gray-60 hover:bg-gray-5">
-                    이 단계에서 받을 수 있는 {hidden}개 더 보기
-                  </button>
-                )}
               </div>
             );
           })}
         </section>
-      )}
-
-      {/* 키 설정 모달 */}
-      {modal && (
-        <div onClick={() => setModal(false)} className="fixed inset-0 z-20 flex items-center justify-center bg-gray-90/40 p-5">
-          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-krds-lg bg-white p-5 shadow-lg">
-            <h2 className="text-title-m font-bold text-gray-90">OpenAI API 키 (선택)</h2>
-            <p className="mt-1.5 break-keep text-body-s text-gray-60">
-              키는 이 브라우저에만 저장되며 서버·저장소에 기록되지 않습니다. 비워두면 서버 키 또는 키워드 모드로 동작합니다.
-            </p>
-            <input value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="sk-..." type="password"
-              className="mt-3 w-full rounded-krds border border-gray-30 px-3 py-2.5 text-body-s text-gray-90 focus:border-primary focus:outline-none" />
-            <div className="mt-4 flex gap-2">
-              <button onClick={() => { localStorage.setItem('openai_key', apiKey); setModal(false); }}
-                className="h-11 flex-1 rounded-krds bg-primary text-label-l font-bold text-white hover:bg-primary-60">저장</button>
-              <button onClick={() => { localStorage.removeItem('openai_key'); setApiKey(''); setModal(false); }}
-                className="h-11 rounded-krds border border-gray-30 px-4 text-label-l text-gray-70 hover:bg-gray-5">삭제</button>
-            </div>
-          </div>
-        </div>
       )}
     </main>
   );

@@ -6,7 +6,7 @@ import { Masthead } from '@krds-ui/core';
 // 모바일(앱/PWA)에선 Masthead·GNB를 숨겨 "컴팩트 헤더 1줄"로 — 데스크톱 크롬을 폰에 욱여넣지 않는다
 // (md: 분기로 데스크톱은 그대로). 상세 docs/android-apk-recipe.md §8.
 
-const SERVICE_NAME = '곁에'; // 가족 복지·돌봄 내비게이터
+const SERVICE_NAME = '첫걸음'; // 가족 복지·돌봄 내비게이터
 const GNB_ITEMS: { label: string; href: string }[] = [];
 
 export function Header() {

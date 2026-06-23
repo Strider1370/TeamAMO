@@ -170,7 +170,7 @@ export async function rankByRelevance({ text, items }, { apiKey, model }) {
   if (!apiKey || !items?.length) return null;
   const isNewGen = /^(gpt-5|o\d)/.test(model || '');
   const list = items.map((it) => `${it.id} :: ${it.name}`).join('\n');
-  const sys = `사용자가 적은 가족 돌봄 상황과 후보 지원 제도 목록(id :: 이름)이 주어진다. 이 가정 상황에 관련성이 높은 순서로 제도 id만 정렬해 JSON {"order":["id", ...]} 으로 반환하라. 목록에 있는 id만 쓰고 새로 만들지 마라. 모든 id를 빠짐없이 포함하라. 설명 없이 JSON만.`;
+  const sys = `사용자가 적은 가족 돌봄 상황과 후보 지원 제도 목록(id :: 이름)이 주어진다. 이 가정 상황에 **지금 가장 관련성이 높고 시급한 순서**로 제도 id를 정렬해 JSON {"order":["id", ...]} 으로 반환하라. 지금 상황과 관련이 적거나 당장 급하지 않은 제도는 뒤로 보내라. 목록에 있는 id만 쓰고 새로 만들지 마라. 모든 id를 포함하라. 설명 없이 JSON만.`;
   const body = {
     model,
     messages: [{ role: 'system', content: sys }, { role: 'user', content: `[상황]\n${text}\n\n[후보 제도]\n${list}` }],

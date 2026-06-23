@@ -62,18 +62,23 @@ export async function POST(req: Request) {
   const rankText = text || Object.values(signals.slots || {}).flat().join(', ');
   if (apiKey && rankText) {
     try {
+      // 정렬 대상은 버킷별 상위 10개(결정론 점수)만 — LLM 호출을 가볍게/안정적으로.
       const items: { id: string; name: string }[] = [];
-      for (const b of Object.keys(result.timeline)) for (const c of result.timeline[b]) items.push({ id: c.id, name: c.name });
+      for (const b of Object.keys(result.timeline)) for (const c of result.timeline[b].slice(0, 10)) items.push({ id: c.id, name: c.name });
       const order = await rankByRelevance({ text: rankText, items }, { apiKey, model });
       if (order) {
         const idx = new Map<string, number>(order.map((id: string, i: number) => [id, i]));
         for (const b of Object.keys(result.timeline)) {
           result.timeline[b].sort((a: any, c: any) => (idx.get(a.id) ?? 1e9) - (idx.get(c.id) ?? 1e9));
-          result.timeline[b].forEach((c: any, i: number) => { c.core = c.boosted || i < 4; });
         }
         result.rankedBy = 'llm';
       }
     } catch { /* 결정론 순서 유지 */ }
+  }
+
+  // 항목(버킷)당 최대 8개만 노출 — 관련도·시급도 낮은 꼬리는 제외.
+  for (const b of Object.keys(result.timeline)) {
+    result.timeline[b] = result.timeline[b].slice(0, 8);
   }
 
   return NextResponse.json({ signals, result });
