@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const m = await b.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, deviceScaleFactor: 2 });
+await m.goto('http://localhost:3000', { waitUntil: 'networkidle', timeout: 90000 });
+await m.waitForSelector('#situation', { timeout: 60000 });
+await m.screenshot({ path: 'design/mockups/krds-mobile-input.png' });
+const d = await b.newPage({ viewport: { width: 1100, height: 800 } });
+await d.goto('http://localhost:3000', { waitUntil: 'networkidle', timeout: 60000 });
+await d.waitForSelector('#situation', { timeout: 30000 });
+await d.screenshot({ path: 'design/mockups/krds-desktop-input.png' });
+await b.close();
+console.log('입력 화면 캡처 완료');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useState } from 'react';
 
 type Card = {
   id: string; name: string; agency?: string; phone?: string | null; badge: string;
@@ -25,19 +25,19 @@ const BUCKETS = [
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [photo, setPhoto] = useState<{ url: string; name: string } | null>(null);
   const [region, setRegion] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<{ signals: Signals; result: Result } | null>(null);
   const [err, setErr] = useState('');
 
-  async function callMatch(payload: { text?: string; region?: string; image?: string }) {
+  async function submit() {
+    if (!text.trim() || loading) return;
     setLoading(true); setErr(''); setData(null);
     try {
       const res = await fetch('/api/match', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ text, region }),
       });
       if (!res.ok) throw new Error('요청에 실패했어요 (' + res.status + ')');
       setData(await res.json());
@@ -45,136 +45,92 @@ export default function Home() {
     finally { setLoading(false); }
   }
 
-  function submit() {
-    if (photo) return void callMatch({ image: photo.url, region });
-    if (text.trim()) return void callMatch({ text, region });
-  }
-
-  // 사진 첨부 시 텍스트는 비운다(혼선 방지). 미리보기 블록으로 상태를 분명히.
-  function onPhoto(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = '';
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onerror = () => setErr('사진을 읽지 못했어요. 다시 시도해 주세요.');
-    reader.onload = () => { setPhoto({ url: String(reader.result), name: file.name }); setText(''); setErr(''); };
-    reader.readAsDataURL(file);
-  }
-
-  const canSubmit = !loading && (!!photo || !!text.trim());
-
   return (
-    <main className="mx-auto max-w-2xl px-4 pb-20">
-      {/* Hero — 모바일 컴팩트, 핵심 입력을 첫 화면에 */}
-      <section className="pt-6 md:pt-10">
-        <p className="text-label-m font-bold text-primary">가족 복지·돌봄 내비게이터</p>
-        <h1 className="mt-1.5 break-keep text-display-s font-bold text-gray-90 md:text-display-m">첫걸음</h1>
-        <p className="mt-2 break-keep text-body-m text-gray-70">
-          누구나 맞이하는 처음을 위한, 당신에게 드리는 정책 가이드 플랫폼
-        </p>
-      </section>
-
-      {/* 입력 카드 */}
-      <section className="mt-5 rounded-krds-lg border border-gray-20 bg-white p-4 md:p-5">
-        {photo ? (
-          <div className="flex items-center gap-3 rounded-krds border border-gray-30 bg-gray-5 p-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo.url} alt="첨부한 서류" className="h-16 w-16 flex-none rounded-krds border border-gray-20 object-cover" />
-            <div className="min-w-0 flex-1">
-              <p className="text-label-m font-bold text-gray-90">서류 사진 첨부됨</p>
-              <p className="truncate text-detail-s text-gray-60">{photo.name}</p>
-            </div>
-            <button onClick={() => setPhoto(null)} className="flex-none rounded-krds px-2.5 py-1.5 text-label-s text-gray-60 hover:bg-gray-10">제거</button>
-          </div>
-        ) : (
-          <>
-            <label htmlFor="situation" className="block text-label-m font-bold text-gray-80">어떤 상황이신가요?</label>
-            <textarea
-              id="situation" value={text} onChange={(e) => setText(e.target.value)} rows={4}
-              placeholder="예) 아버지가 뇌졸중으로 입원하셨다가 곧 퇴원하시는데, 어머니 혼자 못 모시고 형편도 빠듯해요…"
-              className="mt-2 w-full resize-none rounded-krds border border-gray-30 bg-white p-3 text-body-m text-gray-90 placeholder:text-gray-50 focus:border-primary focus:outline-none"
-            />
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {EXAMPLES.map((ex) => (
-                <button key={ex.label} onClick={() => setText(ex.text)}
-                  className="rounded-full border border-gray-30 bg-gray-5 px-3 py-1.5 text-label-s text-gray-70 hover:bg-gray-10">
-                  {ex.label}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* 또는 — 사진 입력 */}
-        {!photo && (
-          <>
-            <div className="my-3 flex items-center gap-3">
-              <span className="h-px flex-1 bg-gray-20" />
-              <span className="text-detail-s text-gray-50">또는</span>
-              <span className="h-px flex-1 bg-gray-20" />
-            </div>
-            <label className="block">
-              <input type="file" accept="image/*" capture="environment" onChange={onPhoto} disabled={loading} className="hidden" />
-              <span className="flex h-11 cursor-pointer items-center justify-center gap-1.5 rounded-krds border border-gray-30 bg-gray-5 text-label-m text-gray-70 hover:bg-gray-10">
-                <i aria-hidden>📷</i> 서류 사진으로 (진단서·영수증)
-              </span>
-            </label>
-          </>
-        )}
-
-        <select value={region} onChange={(e) => setRegion(e.target.value)}
-          className="mt-3 w-full rounded-krds border border-gray-30 bg-white px-3 py-2.5 text-body-s text-gray-80">
-          <option value="">지역 선택 (선택사항)</option>
-          {SIDO.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-
-        <button onClick={submit} disabled={!canSubmit}
-          className="mt-3 h-12 w-full rounded-krds bg-primary text-title-s font-bold text-white transition-colors hover:bg-primary-60 disabled:bg-gray-30 disabled:text-gray-50">
-          {loading ? '상황을 이해하는 중…' : '오늘 할 일로 정리해 드릴게요'}
-        </button>
-      </section>
-
-      {err && (
-        <p className="mt-4 rounded-krds border border-danger-20 bg-danger-5 px-4 py-3 text-body-s text-danger-60">{err}</p>
-      )}
-
-      {/* 결과 */}
-      {data && (
-        <section className="mt-7" aria-live="polite">
-          <h2 className="text-heading-s font-bold text-gray-90">오늘 할 일을 정리했어요</h2>
-          <p className="mt-1 break-keep text-body-s text-gray-60">
-            관련도·시급도 높은 순. 자격은 <b className="font-bold text-gray-80">받을 가능성</b>이며 공식 링크로 꼭 확인하세요.
-            {data.signals.via === 'keyword' ? ' (키워드 모드)' : ''}
+    <main>
+      {/* 상단 히어로 — 색 띠로 감싼 영역 */}
+      <section className="bg-primary-5">
+        <div className="mx-auto max-w-2xl px-4 py-8 md:py-12">
+          <span className="inline-block rounded-krds bg-white px-3 py-1 text-label-s font-bold text-primary">
+            가족 복지·돌봄 내비게이터
+          </span>
+          <h1 className="mt-3 break-keep text-display-s font-bold text-gray-90 md:text-display-m">첫걸음</h1>
+          <p className="mt-2.5 break-keep text-body-m text-gray-70 md:text-body-l">
+            누구나 맞이하는 처음을 위한, 당신에게 드리는 정책 가이드 플랫폼
           </p>
+        </div>
+      </section>
 
-          {/* AI가 읽은 것 */}
-          <div className="mt-3 rounded-krds-lg border border-primary-10 bg-primary-5 p-3">
-            <p className="text-detail-m font-bold text-primary">AI가 읽은 내용 — 맞는지 확인해 주세요</p>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {slotsToChips(data.signals).map((c, i) => (
-                <span key={i} className="rounded-full bg-white px-2.5 py-1 text-label-s font-medium text-primary ring-1 ring-primary-10">{c}</span>
-              ))}
-            </div>
+      <div className="mx-auto max-w-2xl px-4 pb-20">
+        {/* 입력 카드 */}
+        <section className="mt-6 rounded-krds-lg border border-gray-20 bg-white p-4 shadow-sm md:p-5">
+          <label htmlFor="situation" className="block text-label-m font-bold text-gray-80">어떤 상황이신가요?</label>
+          <textarea
+            id="situation" value={text} onChange={(e) => setText(e.target.value)} rows={4}
+            placeholder="예) 아버지가 뇌졸중으로 입원하셨다가 곧 퇴원하시는데, 어머니 혼자 못 모시고 형편도 빠듯해요…"
+            className="mt-2 w-full resize-none rounded-krds border border-gray-30 bg-white p-3 text-body-m text-gray-90 placeholder:text-gray-50 focus:border-primary focus:outline-none"
+          />
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {EXAMPLES.map((ex) => (
+              <button key={ex.label} onClick={() => setText(ex.text)}
+                className="rounded-full border border-gray-30 bg-gray-5 px-3 py-1.5 text-label-s text-gray-70 hover:bg-gray-10">
+                {ex.label}
+              </button>
+            ))}
           </div>
 
-          {BUCKETS.map((bk) => {
-            const cards = data.result.timeline[bk.key] || [];
-            if (!cards.length) return null;
-            return (
-              <div key={bk.key} className="mt-6">
-                <div className="flex items-center gap-2">
-                  <span className={`h-2.5 w-2.5 rounded-full ${bk.dot}`} />
-                  <h3 className="text-title-s font-bold text-gray-90">{bk.label}</h3>
-                  <span className="text-detail-s text-gray-50">{bk.sub}</span>
-                </div>
-                <div className="mt-2.5 space-y-2.5">
-                  {cards.map((c) => <ProgramCard key={c.id} c={c} />)}
-                </div>
-              </div>
-            );
-          })}
+          <select value={region} onChange={(e) => setRegion(e.target.value)}
+            className="mt-3 w-full rounded-krds border border-gray-30 bg-white px-3 py-2.5 text-body-s text-gray-80">
+            <option value="">지역 선택 (선택사항)</option>
+            {SIDO.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+
+          <button onClick={submit} disabled={loading || !text.trim()}
+            className="mt-3 h-12 w-full rounded-krds bg-primary text-title-s font-bold text-white transition-colors hover:bg-primary-60 disabled:bg-gray-30 disabled:text-gray-50">
+            {loading ? '상황을 이해하는 중…' : '오늘 할 일로 정리해 드릴게요'}
+          </button>
         </section>
-      )}
+
+        {err && (
+          <p className="mt-4 rounded-krds border border-danger-20 bg-danger-5 px-4 py-3 text-body-s text-danger-60">{err}</p>
+        )}
+
+        {/* 결과 */}
+        {data && (
+          <section className="mt-7" aria-live="polite">
+            <h2 className="text-heading-s font-bold text-gray-90">오늘 할 일을 정리했어요</h2>
+            <p className="mt-1 break-keep text-body-s text-gray-60">
+              관련도·시급도 높은 순. 자격은 <b className="font-bold text-gray-80">받을 가능성</b>이며 공식 링크로 꼭 확인하세요.
+              {data.signals.via === 'keyword' ? ' (키워드 모드)' : ''}
+            </p>
+
+            <div className="mt-3 rounded-krds-lg border border-primary-10 bg-primary-5 p-3">
+              <p className="text-detail-m font-bold text-primary">AI가 읽은 내용 — 맞는지 확인해 주세요</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {slotsToChips(data.signals).map((c, i) => (
+                  <span key={i} className="rounded-full bg-white px-2.5 py-1 text-label-s font-medium text-primary ring-1 ring-primary-10">{c}</span>
+                ))}
+              </div>
+            </div>
+
+            {BUCKETS.map((bk) => {
+              const cards = data.result.timeline[bk.key] || [];
+              if (!cards.length) return null;
+              return (
+                <div key={bk.key} className="mt-6">
+                  <div className="flex items-center gap-2">
+                    <span className={`h-2.5 w-2.5 rounded-full ${bk.dot}`} />
+                    <h3 className="text-title-s font-bold text-gray-90">{bk.label}</h3>
+                    <span className="text-detail-s text-gray-50">{bk.sub}</span>
+                  </div>
+                  <div className="mt-2.5 space-y-2.5">
+                    {cards.map((c) => <ProgramCard key={c.id} c={c} />)}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        )}
+      </div>
     </main>
   );
 }
