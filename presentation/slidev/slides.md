@@ -17,7 +17,7 @@ durationSeconds: 30
 impl: "implemented"
 ---
 <div class="absolute top-5 right-5 text-center z-10">
-  <img src="/firststep-qr.png" class="w-28 h-28 rounded bg-white p-1" />
+  <img src="https://projectamo.co.kr/firststep-qr.png" class="w-28 h-28 rounded bg-white p-1" />
   <div class="text-sm mt-1 opacity-80">APK 설치</div>
 </div>
 
@@ -222,8 +222,8 @@ impl: "implemented"
   </div>
 </div>
 
-<div mt-6>
-  <img src="/captures/demo.png" class="w-full rounded-xl object-contain max-h-[42vh]" />
+<div mt-6 flex justify-center>
+  <img src="/captures/demo.png" class="rounded-xl object-contain max-h-[42vh] max-w-full" />
 </div>
 
 <!--
