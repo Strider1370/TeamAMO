@@ -780,7 +780,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "퇴원후",
+    "timeline": "지금",
     "amount": "본인부담의료비 중 일부 지원(연 최대 5,000만원 한도)",
     "regionVaries": false,
     "source": {
@@ -3752,7 +3752,7 @@
       ]
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": null,
     "regionVaries": false,
     "source": {
@@ -3816,7 +3816,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "기초급여 월 최대 349,700원 + 부가급여(소득·연령별 차등) → 2026년 최대 합산 월 439,700원 수준(생계·의료급여 수급 중증장애인). 감액·연령에 따라 실제 수령액 상이",
     "regionVaries": false,
     "source": {
@@ -3881,7 +3881,7 @@
       "ltci-recognition",
       "elderly-customized-care"
     ],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "활동지원등급별 월 급여량(시간) 차등. 본인부담금 소득별 차등",
     "regionVaries": false,
     "source": {
@@ -3939,7 +3939,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "1차 외래 본인부담 일부 지원, 2·3차 외래 및 입원 본인부담 전액 지원(자격·진료단계별 상이) — 정확한 범위는 링크·읍면동 확인",
     "regionVaries": false,
     "source": {
@@ -4001,7 +4001,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "퇴원후",
+    "timeline": "장기",
     "amount": "1인당 연간 200만원 한도 내 최대 3개 품목(2026년 기준, 총 46개 품목)",
     "regionVaries": true,
     "source": {
@@ -4066,7 +4066,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "퇴원후",
+    "timeline": "장기",
     "amount": "보험급여 대상 품목의 기준액과 실구입액 중 낮은 금액의 90% 지급(기준액 초과 시 기준액의 90%)",
     "regionVaries": false,
     "source": {
@@ -4493,7 +4493,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "무급(법정 급여 없음). 사업장 단체협약·취업규칙에 별도 정함이 있으면 그에 따름",
     "regionVaries": false,
     "source": {
@@ -4555,7 +4555,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "원칙 무급(법정 급여 없음). 사업장 정함이 있으면 그에 따름",
     "regionVaries": false,
     "source": {
@@ -4616,7 +4616,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "단축된 근로시간 비례 임금(사업주 지급). 정부의 근로시간단축 지원금(워라밸일자리 장려금 등)은 사업주 대상 별도 제도로 본 항목 금액과 구분",
     "regionVaries": false,
     "source": {
@@ -4739,7 +4739,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "무료(근로복지공단 지원). 개인 연 최대 7회, 게시판 상담은 횟수 제한 없음",
     "regionVaries": false,
     "source": {
@@ -4802,7 +4802,7 @@
       "prerequisiteOf": []
     },
     "exclusiveWith": [],
-    "timeline": "지금",
+    "timeline": "장기",
     "amount": "무료(국비·지방비 지원). 프로그램 운영비 부담 없음",
     "regionVaries": true,
     "source": {

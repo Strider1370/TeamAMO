@@ -1,0 +1,114 @@
+{
+  "version": "1.0",
+  "verifiedAt": "2026-06-23",
+  "note": "T1 규칙엔진 데이터. 슬롯 어휘는 questionnaire.json slotSchema를 canonical 기준으로 확정. 매칭 알고리즘 계약은 ENGINE-SPEC.md 참조. 제도 사실은 curated-benefits.json이 진실원천이며 본 파일은 '점등 규칙'만 정의(제도 데이터 미복제). 표준 situation 10키: 노년진입·입원·퇴원ADL·노쇠치매·가족환경·경제주거·말기임종·장애등록·권리안전·돌봄자지원.",
+
+  "situations": [
+    "노년진입",
+    "입원",
+    "퇴원ADL",
+    "노쇠치매",
+    "가족환경",
+    "경제주거",
+    "말기임종",
+    "장애등록",
+    "권리안전",
+    "돌봄자지원"
+  ],
+
+  "slotVocabulary": {
+    "_source": "questionnaire.json slotSchema (canonical). slot-dictionary.json·demo-personas.json·curated eligibility.slots 모두 이 어휘로 정렬.",
+    "target": ["부", "모", "본인", "배우자"],
+    "age": [">=65", ">=60", ">=19", ">=18", "<65"],
+    "condition": ["치매", "뇌졸중", "골절", "암", "파킨슨", "중증화상", "희귀난치", "기타"],
+    "adl": ["도움 필요", "보조기기 필요", "독립"],
+    "household": ["독거", "노인2인", "조손", "동거"],
+    "incomeBand": ["기초수급", "차상위", "기초연금", "일반"],
+    "lifeEvent": ["입원", "퇴원", "진단", "사별", "은퇴", "위기사유"],
+    "caregiver": ["자녀 직장병행", "소진"],
+    "permanentDisability": ["후유장애", "없음"],
+    "region": "자유 문자열(시군구)"
+  },
+
+  "slotToSituations": {
+    "_note": "각 슬롯 '축:값' → 점등될 situations[]. 06-situation-catalog Task3와 정합. 여기에 명시되지 않은 값(예: target:*, adl:독립, incomeBand:일반, lifeEvent:진단, permanentDisability:없음)은 단독으로 situation을 점등하지 않음(다른 슬롯·직접선택 situation과 결합해야 함). region은 점등에 미사용(링크·관할 안내용).",
+
+    "age:>=65": ["노년진입"],
+    "age:>=60": ["노년진입"],
+
+    "condition:치매": ["노쇠치매", "권리안전"],
+    "condition:뇌졸중": ["입원", "퇴원ADL", "장애등록"],
+    "condition:골절": ["입원", "퇴원ADL"],
+    "condition:암": ["입원"],
+    "condition:파킨슨": ["노쇠치매", "장애등록"],
+    "condition:중증화상": ["입원"],
+    "condition:희귀난치": ["입원"],
+    "condition:기타": ["입원"],
+
+    "adl:도움 필요": ["퇴원ADL"],
+    "adl:보조기기 필요": ["퇴원ADL"],
+
+    "household:독거": ["가족환경", "권리안전"],
+    "household:노인2인": ["가족환경"],
+    "household:조손": ["가족환경"],
+
+    "incomeBand:기초수급": ["경제주거"],
+    "incomeBand:차상위": ["경제주거"],
+    "incomeBand:기초연금": ["경제주거"],
+
+    "lifeEvent:입원": ["입원"],
+    "lifeEvent:퇴원": ["퇴원ADL"],
+    "lifeEvent:사별": ["가족환경", "말기임종"],
+    "lifeEvent:은퇴": ["노년진입", "경제주거"],
+    "lifeEvent:위기사유": ["경제주거"],
+
+    "caregiver:자녀 직장병행": ["돌봄자지원"],
+    "caregiver:소진": ["돌봄자지원"],
+
+    "permanentDisability:후유장애": ["장애등록"]
+  },
+
+  "keyProgramBoosts": {
+    "_note": "특정 슬롯(또는 슬롯 조합)이 있으면 해당 situation 제도 풀에서 '반드시 surface'시킬 제도 id. ranking·가지치기에서 탈락하지 않도록 핀고정(pin). when이 배열이면 AND 조건(모든 슬롯이 입력에 존재해야 발동). curated triggerKeywords·prerequisiteOf와 정합.",
+    "rules": [
+      { "when": ["condition:치매"], "boost": ["dementia-center"] },
+      { "when": ["condition:뇌졸중"], "boost": ["ltci-recognition", "rehab-hospital"] },
+      { "when": ["condition:파킨슨"], "boost": ["disability-registration"] },
+      { "when": ["condition:암"], "boost": ["special-copay", "cancer-patient-medical-cost"] },
+      { "when": ["lifeEvent:퇴원", "adl:도움 필요"], "boost": ["ltci-recognition"] },
+      { "when": ["lifeEvent:퇴원", "adl:보조기기 필요"], "boost": ["ltci-recognition"] },
+      { "when": ["adl:도움 필요"], "boost": ["ltci-recognition"] },
+      { "when": ["permanentDisability:후유장애"], "boost": ["disability-registration"] },
+      { "when": ["household:독거"], "boost": ["emergency-safety"] },
+      { "when": ["household:독거", "condition:치매"], "boost": ["wandering-id", "fingerprint-prereg"] },
+      { "when": ["caregiver:소진"], "boost": ["short-term-care", "ltci-family-respite", "day-night-care"] },
+      { "when": ["caregiver:자녀 직장병행"], "boost": ["family-care-leave", "family-care-vacation"] },
+      { "when": ["incomeBand:기초연금"], "boost": ["telecom-discount"] },
+      { "when": ["incomeBand:기초수급"], "boost": ["basic-livelihood", "energy-voucher", "utility-discount"] },
+      { "when": ["lifeEvent:은퇴", "age:>=65"], "boost": ["basic-pension", "senior-jobs"] },
+      { "when": ["age:>=65"], "boost": ["basic-pension"] },
+      { "when": ["lifeEvent:사별"], "boost": ["survivor-pension", "household-change-recheck"] }
+    ]
+  },
+
+  "confidenceToBadge": {
+    "확인": "받을 가능성",
+    "잠재후보": "받을 가능성",
+    "미확인": "확인 필요"
+  },
+
+  "timelineBuckets": {
+    "_note": "체크리스트 시간축. curated-benefits.json 각 제도 timeline 필드 값과 1:1 대응. 분류 규칙은 rules[] 참조.",
+    "order": ["지금", "퇴원후", "장기"],
+    "labels": {
+      "지금": "지금 (급한 관문·기한 임박)",
+      "퇴원후": "퇴원 후 (등급 인정 뒤 열리는 재가서비스)",
+      "장기": "장기 (별도 트랙·돌봄자 지원·예방)"
+    },
+    "rules": {
+      "지금": "신청 관문이거나 기한이 임박해 즉시 움직여야 하는 제도. 등급·등록 같은 선행 절차(ltci-recognition·dementia-center·disability는 별도), 기한 임박 의료비(catastrophic-medical 퇴원 180일·special-copay 확진 30일·emergency-medical-aid 퇴원 3일전·copay 산정특례), 즉시 받는 노년 기본급여·감면, 안전망(독거 안부·응급안전), 말기·사후 즉시행정.",
+      "퇴원후": "장기요양 '등급 인정(ltci-recognition)'이 선행돼야 비로소 열리는 등급의존 재가서비스. home-care-visit·day-night-care·welfare-equipment·short-term-care·visiting-bath·rehab-hospital·assistive-device-ltci·nursing-hospital-guide.",
+      "장기": "급성기와 무관하게 별도 트랙으로 천천히 진행되는 제도. ① 장애등록 경로 전체(disability-registration·pension·activity-support·medical·assistive-device·assistive-device-insurance·disability-tax-reduction) ② 돌봄자(자녀) 지원(family-care-leave·family-care-vacation·work-hour-reduction·caregiver-counseling·dementia-family-support·ltci-family-respite·family-caregiver-allowance) ③ 예방·커뮤니티·생활보조(dementia-safe-village·dementia-public-guardian·copay-ceiling 사후환급·culture-voucher·rice-discount·elder-rights-education)."
+    }
+  }
+}
