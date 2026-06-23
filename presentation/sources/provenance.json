@@ -1,0 +1,26 @@
+{
+  "$comment": "자산 출처/라이선스 기계 판독 메타. 사람용 설명은 ASSET_LICENSES.md. 당일 자산을 추가할 때 assets 배열에 항목을 더한다.",
+  "version": 1,
+  "themes": [],
+  "fonts": [
+    { "id": "pretendard", "license": "OFL-1.1", "origin": "orioncactus/pretendard", "bundled": true, "bundledAt": "presentation/slidev/public/fonts/PretendardVariable.woff2", "note": "Slidev 엔진이 로컬 woff2 로 번들(오프라인 발표 가능)." },
+    { "id": "noto-sans-kr", "license": "OFL-1.1", "origin": "google-fonts", "bundled": false },
+    { "id": "inter", "license": "OFL-1.1", "origin": "google-fonts", "bundled": false },
+    { "id": "fraunces", "license": "OFL-1.1", "origin": "google-fonts", "bundled": false }
+  ],
+  "icons": [
+    { "id": "carbon", "license": "Apache-2.0", "origin": "@iconify-json/carbon" },
+    { "id": "ph", "license": "MIT", "origin": "@iconify-json/ph" },
+    { "id": "twemoji", "license": "CC-BY-4.0", "origin": "@iconify-json/twemoji", "attributionRequired": true }
+  ],
+  "referenceCaptures": [
+    {
+      "id": "baizeai-kubecon",
+      "license": "Apache-2.0",
+      "origin": "presentation/slidev/reference-capture/RECIPE.md",
+      "usage": "visual-benchmark-only",
+      "embedInFinalDeck": false
+    }
+  ],
+  "assets": []
+}

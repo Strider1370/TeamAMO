@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "description": "공통 semantic layout 16개. AI는 먼저 semanticId를 고르고, 렌더러가 실제 Slidev layout으로 매핑한다. 등록되지 않은 layout은 임의 생성 금지. slidev 값은 Slidev 내장/템플릿 layout. content 슬롯 이름은 reference/04 §3 슬롯 필드맵과 일치.",
+  "layouts": [
+    {
+      "semanticId": "hero",
+      "renderers": { "slidev": "cover" },
+      "slots": ["eyebrow", "title", "subtitle", "footnote"]
+    },
+    {
+      "semanticId": "problem-flow",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "items"]
+    },
+    {
+      "semanticId": "contrast",
+      "renderers": { "slidev": "two-cols" },
+      "slots": ["title", "lead", "leftLabel", "left", "rightLabel", "right"]
+    },
+    {
+      "semanticId": "insight-statement",
+      "renderers": { "slidev": "statement" },
+      "slots": ["title", "subtitle"]
+    },
+    {
+      "semanticId": "product-overview",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "features"]
+    },
+    {
+      "semanticId": "demo-fullscreen",
+      "renderers": { "slidev": "image" },
+      "slots": ["title", "subtitle"]
+    },
+    {
+      "semanticId": "demo-callout",
+      "renderers": { "slidev": "image-right" },
+      "slots": ["title", "callout", "points"]
+    },
+    {
+      "semanticId": "architecture",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "steps", "result"]
+    },
+    {
+      "semanticId": "before-after",
+      "renderers": { "slidev": "two-cols" },
+      "slots": ["title", "beforeLabel", "afterLabel", "beforeCaption", "afterCaption"]
+    },
+    {
+      "semanticId": "big-number",
+      "renderers": { "slidev": "center" },
+      "slots": ["label", "number", "caption"]
+    },
+    {
+      "semanticId": "card-grid",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "cards"]
+    },
+    {
+      "semanticId": "timeline",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "steps"]
+    },
+    {
+      "semanticId": "quote",
+      "renderers": { "slidev": "quote" },
+      "slots": ["quote", "attribution"]
+    },
+    {
+      "semanticId": "limitation-guardrail",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "limitations", "guardrails"]
+    },
+    {
+      "semanticId": "expansion-map",
+      "renderers": { "slidev": "default" },
+      "slots": ["title", "tiers"]
+    },
+    {
+      "semanticId": "closing",
+      "renderers": { "slidev": "end" },
+      "slots": ["title", "subtitle", "cta", "tags", "contact"]
+    }
+  ],
+  "selectionRules": {
+    "description": "Doc2 §10 규칙 기반 role→semanticLayout 매핑. 위에서 아래로 첫 일치 적용. condition은 scene 필드(role, wowMoment, comparison, contentType)를 평가. 동률/모호 시 select-layouts.mjs가 메시지 길이·숫자 존재·이미지 존재·직전 레이아웃 반복 회피로 보조 결정한다.",
+    "rules": [
+      { "when": { "role": "answer-first" }, "layout": "hero" },
+      { "when": { "role": "closing" }, "layout": "closing" },
+      { "when": { "role": "demo", "wowMoment": true }, "layout": "demo-callout" },
+      { "when": { "role": "demo" }, "layout": "demo-fullscreen" },
+      { "when": { "role": "mechanism" }, "layout": "architecture" },
+      { "when": { "role": "insight", "comparison": "assumption-reality" }, "layout": "contrast" },
+      { "when": { "role": "insight", "comparison": "strong-statement" }, "layout": "insight-statement" },
+      { "when": { "role": "insight" }, "layout": "insight-statement" },
+      { "when": { "role": "impact", "comparison": "process" }, "layout": "before-after" },
+      { "when": { "role": "impact", "contentType": "big-number" }, "layout": "big-number" },
+      { "when": { "role": "impact" }, "layout": "big-number" },
+      { "when": { "role": "limitation" }, "layout": "limitation-guardrail" },
+      { "when": { "role": "expansion" }, "layout": "expansion-map" },
+      { "when": { "role": "problem" }, "layout": "problem-flow" },
+      { "when": { "role": "solution" }, "layout": "product-overview" },
+      { "when": { "role": "product-overview" }, "layout": "product-overview" }
+    ],
+    "fallbackLayout": "card-grid"
+  }
+}

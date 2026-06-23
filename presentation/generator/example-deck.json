@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "meta": {
+    "title": "샘플 발표 (레이아웃 데모)",
+    "engine": "slidev",
+    "aspectRatio": "16:9",
+    "language": "ko",
+    "presentationMinutes": 5,
+    "totalDurationSeconds": 300
+  },
+  "slides": [
+    {
+      "id": "slide-01",
+      "sceneId": "scene-01",
+      "role": "answer-first",
+      "semanticLayout": "hero",
+      "content": {
+        "eyebrow": "프로젝트 분야",
+        "title": "한 줄 결론을 여기에",
+        "subtitle": "누구에게 · 무엇을 · 어떻게 해결하는지 한 문장으로",
+        "footnote": "근거·데이터 출처를 여기에"
+      },
+      "speakerNotes": "발표 첫 문장입니다. 결론(결과)부터 한 문장으로 말합니다. (이 파일은 레이아웃 데모용 placeholder이며, 새 주제로 내용을 갈아끼웁니다.)",
+      "durationSeconds": 30,
+      "layoutReason": "answer-first role → hero",
+      "implementationStatus": "implemented"
+    },
+    {
+      "id": "slide-02",
+      "sceneId": "scene-02",
+      "role": "insight",
+      "semanticLayout": "contrast",
+      "content": {
+        "title": "기존 방식 vs 우리 접근",
+        "leftLabel": "기존 방식",
+        "left": ["기존 한계 1", "기존 한계 2", "기존 한계 3"],
+        "rightLabel": "우리 접근",
+        "right": ["개선점 1", "개선점 2", "개선점 3"]
+      },
+      "speakerNotes": "문제를 다르게 보는 관점을 좌우 대비로 보여줍니다.",
+      "durationSeconds": 50,
+      "layoutReason": "insight + assumption-reality 대비 → contrast",
+      "implementationStatus": "implemented"
+    },
+    {
+      "id": "slide-03",
+      "sceneId": "scene-03",
+      "role": "demo",
+      "semanticLayout": "demo-callout",
+      "content": {
+        "title": "핵심 데모 장면",
+        "callout": ["데모 포인트 1", "데모 포인트 2", "데모 포인트 3"],
+        "caption": "데모 화면 캡처 자리"
+      },
+      "assets": {
+        "image": { "src": "../output/captures/demo-main.png", "status": "placeholder" }
+      },
+      "speakerNotes": "실제 동작을 보여주는 부분입니다. 발표 시간의 절반 이상을 여기에 씁니다.",
+      "durationSeconds": 90,
+      "layoutReason": "demo + wowMoment → demo-callout",
+      "implementationStatus": "implemented"
+    },
+    {
+      "id": "slide-04",
+      "sceneId": "scene-04",
+      "role": "impact",
+      "semanticLayout": "big-number",
+      "content": {
+        "label": "핵심 지표",
+        "number": "00 → 00",
+        "caption": "측정 근거를 여기에 (표본·기준 명시)"
+      },
+      "speakerNotes": "효과를 숫자 하나로 보여줍니다. 근거를 함께 말합니다.",
+      "durationSeconds": 40,
+      "layoutReason": "impact + big-number contentType → big-number",
+      "implementationStatus": "implemented"
+    },
+    {
+      "id": "slide-05",
+      "sceneId": "scene-05",
+      "role": "limitation",
+      "semanticLayout": "limitation-guardrail",
+      "content": {
+        "title": "한계와 안전장치",
+        "limitations": ["한계 1", "한계 2 (미구현/mocked)", "한계 3"],
+        "guardrails": ["안전장치 1", "안전장치 2", "안전장치 3"]
+      },
+      "speakerNotes": "한계를 솔직히 말하고, 그에 대한 안전장치를 제시합니다.",
+      "durationSeconds": 50,
+      "layoutReason": "limitation role → limitation-guardrail",
+      "implementationStatus": "mocked"
+    },
+    {
+      "id": "slide-06",
+      "sceneId": "scene-06",
+      "role": "closing",
+      "semanticLayout": "closing",
+      "content": {
+        "title": "기억에 남을 마지막 문장",
+        "subtitle": "다음 단계를 여기에",
+        "cta": "데모 주소를 여기에",
+        "team": "팀 이름",
+        "contact": "연락처"
+      },
+      "speakerNotes": "마지막 한 문장으로 닫습니다.",
+      "durationSeconds": 40,
+      "layoutReason": "closing role → closing",
+      "implementationStatus": "implemented"
+    }
+  ]
+}

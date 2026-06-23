@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "description": "발표 생성 엔진. 키트는 Slidev 단일 엔진을 쓴다. 오프라인/백업도 slidev build(dist) 정적 서빙으로 해결한다(serve-static.mjs).",
+  "primary": "slidev",
+  "engines": {
+    "slidev": {
+      "role": "primary",
+      "kind": "slidev",
+      "renderer": "generate-slidev.mjs",
+      "output": "presentation/output/slidev/",
+      "entry": "presentation/slidev/slides.md",
+      "source": "presentation/slidev/",
+      "rendererKey": "slidev",
+      "notes": "deck.json → slidev/slides.md → slidev build. (생성기가 slidev 프로젝트 안에 직접 출력)"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "presentation/generator/deck.schema.json",
+  "title": "deck.json",
+  "description": "Slidev 슬라이드의 단일 계약. 슬롯 이름은 reference/04 §3 슬롯 필드맵과 일치.",
+  "type": "object",
+  "required": ["version", "meta", "slides"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "meta": {
+      "type": "object",
+      "required": ["title", "engine"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "engine": {
+          "type": "string",
+          "description": "생성 엔진. Slidev 단일.",
+          "enum": ["slidev"]
+        },
+        "theme": { "type": "string", "description": "Slidev 테마(생략 시 기본 테마)." },
+        "aspectRatio": { "type": "string", "default": "16:9" },
+        "language": { "type": "string", "default": "ko" },
+        "clicks": { "type": "boolean", "description": "점진 표시(v-clicks). 기본 false=모든 내용 즉시 노출.", "default": false },
+        "presentationMinutes": { "type": "integer", "minimum": 0 },
+        "totalDurationSeconds": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/slide" }
+    }
+  },
+  "$defs": {
+    "slide": {
+      "type": "object",
+      "required": ["id", "semanticLayout", "content"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^slide-[0-9]+$",
+          "description": "예: slide-01"
+        },
+        "sceneId": {
+          "type": "string",
+          "pattern": "^scene-[0-9]+$",
+          "description": "원본 scene 참조."
+        },
+        "role": {
+          "type": "string",
+          "description": "scenes.json의 role을 승계."
+        },
+        "semanticLayout": {
+          "type": "string",
+          "description": "Doc2 §8 공통 semantic layout ID. layout-registry.json에 등록된 것만 허용.",
+          "enum": [
+            "hero",
+            "problem-flow",
+            "contrast",
+            "insight-statement",
+            "product-overview",
+            "demo-fullscreen",
+            "demo-callout",
+            "architecture",
+            "before-after",
+            "big-number",
+            "card-grid",
+            "timeline",
+            "quote",
+            "limitation-guardrail",
+            "expansion-map",
+            "closing"
+          ]
+        },
+        "engineLayout": {
+          "type": "string",
+          "description": "실제 Slidev layout 이름(렌더러가 채움). 선택."
+        },
+        "referenceCapture": {
+          "type": "string",
+          "description": "참고 캡처 ID(밀도/리듬 기준). 선택."
+        },
+        "content": {
+          "type": "object",
+          "description": "semantic layout의 slot에 채워지는 내용. slot 이름은 layout-registry.json 참조.",
+          "additionalProperties": true
+        },
+        "assets": {
+          "type": "object",
+          "description": "슬롯에 들어가는 자산 경로 맵(로컬 경로). Doc2 §17 #9: 외부 URL 금지.",
+          "additionalProperties": true
+        },
+        "speakerNotes": {
+          "type": "string",
+          "description": "발표자 노트. Doc2 §11: 반드시 포함."
+        },
+        "durationSeconds": { "type": "integer", "minimum": 0 },
+        "contentScale": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2,
+          "default": 1,
+          "description": "슬라이드 본문 콘텐츠 글자 배율. 미지정 시 1(변화 없음). 여백 많으면 키우고 빽빽하면 줄인다. 프레임·간격은 고정, 글자만 스케일."
+        },
+        "layoutReason": {
+          "type": "string",
+          "description": "레이아웃 선택 이유 로그. Doc2 §10."
+        },
+        "implementationStatus": {
+          "type": "string",
+          "enum": ["implemented", "mocked", "fallback", "dropped", "blocked"],
+          "description": "Doc2 §11: implemented가 아니면 실제 구현처럼 표현 금지."
+        },
+        "claimIds": { "type": "array", "items": { "type": "string" } },
+        "sourceIds": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
