@@ -75,6 +75,8 @@
       { "when": ["condition:뇌졸중"], "boost": ["ltci-recognition", "rehab-hospital"] },
       { "when": ["condition:파킨슨"], "boost": ["disability-registration"] },
       { "when": ["condition:암"], "boost": ["special-copay", "cancer-patient-medical-cost"] },
+      { "when": ["lifeEvent:입원"], "boost": ["catastrophic-medical", "integrated-nursing"] },
+      { "when": ["lifeEvent:위기사유"], "boost": ["emergency-welfare"] },
       { "when": ["lifeEvent:퇴원", "adl:도움 필요"], "boost": ["ltci-recognition"] },
       { "when": ["lifeEvent:퇴원", "adl:보조기기 필요"], "boost": ["ltci-recognition"] },
       { "when": ["adl:도움 필요"], "boost": ["ltci-recognition"] },

@@ -19,26 +19,33 @@ for (const p of list) {
   const missing = expected.filter((id) => !surfaced.has(id));
   const pass = missing.length === 0;
   allPass = allPass && pass;
-  const counts = rules.timelineBuckets.order.map((b) => `${b} ${out.timeline[b].length}`).join(' · ');
+  const counts = rules.timelineBuckets.order.map((b) => {
+    const cards = out.timeline[b];
+    return `${b} ${cards.filter((c) => c.core).length}/${cards.length}`;
+  }).join(' · ');
   console.log(`\n${pass ? 'PASS' : 'FAIL'}  ${p.id}  (expected ${expected.length}/${expected.length - missing.length} surface)`);
   console.log(`   lit: ${out.litSituations.join(', ')}`);
-  console.log(`   buckets: ${counts}  | 택일쌍: ${out.exclusivePairs.length}`);
+  console.log(`   buckets(핵심/전체): ${counts}  | 택일쌍: ${out.exclusivePairs.length}`);
   if (missing.length) console.log(`   !! MISSING: ${missing.join(', ')}`);
 }
 
 // 메인 Wow 페르소나 타임라인 상세
 const main = list.find((p) => p.id === 'persona-stroke-discharge') || list[0];
 if (main) {
-  const out = matchPrograms({ situations: main.expectedSituations || [], slots: main.expectedSlots || {} }, { rules, curated });
-  console.log(`\n──────── 타임라인 상세: ${main.id} ────────`);
+  const concern = '돌봄공백';
+  const out = matchPrograms({ situations: main.expectedSituations || [], slots: main.expectedSlots || {}, primaryConcern: concern }, { rules, curated });
+  console.log(`\n──────── 타임라인 상세(핵심만): ${main.id} · primaryConcern=${concern} ────────`);
   for (const b of rules.timelineBuckets.order) {
-    console.log(`\n[${b}]`);
-    for (const c of out.timeline[b]) {
+    const cards = out.timeline[b];
+    const core = cards.filter((c) => c.core);
+    console.log(`\n[${b}]  (핵심 ${core.length} / 전체 ${cards.length})`);
+    for (const c of core) {
       const dep = c.prerequisiteOf.length ? ` →여는: ${c.prerequisiteOf.length}개` : '';
       const ex = c.exclusiveChoice.length ? ` ⇄택일: ${c.exclusiveChoice.join(',')}` : '';
       const bo = c.boosted ? ' ★' : '';
-      console.log(`   [${c.badge}] ${c.name} (${c.id})${bo}${dep}${ex}`);
+      console.log(`   [${c.badge}] ${c.name} (${c.id})  점수${c.relevanceScore}${bo}${dep}${ex}`);
     }
+    if (cards.length > core.length) console.log(`   … +${cards.length - core.length}개 더 (접힘)`);
   }
   if (out.exclusivePairs.length) {
     console.log('\n택일 관계(둘 다 노출, 사용자가 선택):');
