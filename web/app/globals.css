@@ -1,0 +1,33 @@
+/* Pretendard (KRDS 권장 본문 폰트, 브라우저에서 CDN 로드) */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+/* @krds-ui/core 공식 컴포넌트 스타일 (색상 토큰 baked-in, 별도 플러그인 불필요).
+   프로젝트 Tailwind 유틸리티가 뒤에 로드되어 공용 클래스(.bg-primary 등)는
+   우리 tailwind.config 값으로 정렬된다. */
+@import '@krds-ui/core/dist/style.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #1e2124; /* gray-90 */
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    /* 한국어 줄바꿈: 제목/본문이 음절 중간에서 깨지지 않게(예: "첫 걸음"). 공백 단위로만 줄바꿈. */
+    word-break: keep-all;
+    overflow-wrap: anywhere; /* 단, URL 등 공백 없는 긴 토큰은 넘치지 않게 폴백 */
+  }
+  /* KRDS 접근성: 명확한 포커스 표시 */
+  *:focus-visible {
+    outline: 2px solid #256ef4;
+    outline-offset: 2px;
+  }
+}

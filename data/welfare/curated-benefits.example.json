@@ -1,0 +1,31 @@
+[
+  {
+    "id": "example-1",
+    "name": "예시: 청년월세 한시 특별지원",
+    "agency": "국토교통부",
+    "summary": "무주택 청년의 월세를 한시적으로 지원.",
+    "amount": "월 최대 20만원 (최대 12개월)",
+    "rules": {
+      "eligibility": ["age_between(19,34)", "no_home", "income_below(median*0.6)"],
+      "slots": ["applicantAge", "isHomeless", "monthlyIncome"]
+    },
+    "applyChannel": "복지로 또는 정부24",
+    "applyHowOneLine": "복지로에서 '청년월세' 검색 → 온라인 신청",
+    "applyUrl": "https://www.gov.kr/portal/rcvfvrSvc/main",
+    "source": "보조금24",
+    "sampleData": true
+  },
+  {
+    "id": "",
+    "name": "",
+    "agency": "",
+    "summary": "",
+    "amount": "",
+    "rules": { "eligibility": [], "slots": [] },
+    "applyChannel": "",
+    "applyHowOneLine": "",
+    "applyUrl": "",
+    "source": "",
+    "sampleData": true
+  }
+]

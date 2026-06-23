@@ -1,0 +1,27 @@
+/* app/globals.css — KRDS + Tailwind 베이스 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * 옵션 A (권장): @krds-ui/tailwindcss-plugin 이 :root 변수를 자동 주입하므로
+ *   별도 import 불필요. tailwind.config.js 의 plugins 에 등록만 하면 됨.
+ *
+ * 옵션 B (오프라인/플러그인 미사용): 벤더링된 공식 토큰 CSS를 직접 사용.
+ *   아래 주석을 해제. (변수명이 --krds-color-light-* 형태인 점 주의)
+ */
+/* @import './krds_tokens.css'; */
+
+:root {
+  --background: var(--krds-color-gray-0, #ffffff);
+  --foreground: var(--krds-color-gray-90, #1e2124);
+}
+
+html, body {
+  background: var(--background);
+  color: var(--foreground);
+  /* KRDS 권장 본문 폰트: Pretendard GOV / 시스템 한글 폰트 */
+  font-family: 'Pretendard GOV', Pretendard, system-ui, 'Apple SD Gothic Neo',
+    'Malgun Gothic', sans-serif;
+}
