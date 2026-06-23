@@ -71,8 +71,8 @@ export async function llmExtract(text, { apiKey, model }) {
     messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: text }],
     response_format: { type: 'json_object' },
   };
-  if (isNewGen) body.max_completion_tokens = 500;
-  else { body.max_tokens = 500; body.temperature = 0; }
+  if (isNewGen) { body.max_completion_tokens = 3000; body.reasoning_effort = 'low'; }
+  else { body.max_tokens = 600; body.temperature = 0; }
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
@@ -86,16 +86,33 @@ export async function llmExtract(text, { apiKey, model }) {
   return { ...sanitize(JSON.parse(raw)), via: 'llm', model };
 }
 
-/** 통합 진입점 — LLM 시도 → 실패/무키 시 키워드 폴백 */
-export async function extractSignals(text, { dict, apiKey, model }) {
-  if (apiKey) {
-    try {
-      const r = await llmExtract(text, { apiKey, model });
-      // LLM이 아무 신호도 못 뽑으면 키워드로 보강
-      if (r && (r.situations.length || Object.keys(r.slots).length)) return r;
-    } catch (e) {
-      // 폴백으로 진행
+function mergeSlots(a, b) {
+  const out = {};
+  for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    if (key === 'target' && b[key]) { out[key] = b[key]; continue; } // target은 LLM 단일값 우선(과추출 방지)
+    const vals = new Set();
+    for (const src of [a[key], b[key]]) {
+      if (src == null) continue;
+      (Array.isArray(src) ? src : [src]).forEach((v) => vals.add(v));
     }
+    const arr = [...vals];
+    if (arr.length) out[key] = arr.length === 1 ? arr[0] : arr;
   }
-  return keywordExtract(text, dict);
+  return out;
+}
+
+/** 통합 진입점 — 키워드(바닥) ∪ LLM(이해·뉘앙스). 좋은 모델도 놓치는 명시 신호를 키워드가 보장. */
+export async function extractSignals(text, { dict, apiKey, model }) {
+  const kw = keywordExtract(text, dict); // 결정론적 바닥 — 명시 키워드는 반드시 잡힘
+  let llm = null;
+  if (apiKey) {
+    try { llm = await llmExtract(text, { apiKey, model }); } catch { /* 폴백 */ }
+  }
+  if (!llm) return { ...kw, via: 'keyword' };
+  return {
+    situations: [...new Set([...kw.situations, ...llm.situations])],
+    slots: mergeSlots(kw.slots, llm.slots),
+    primaryConcern: llm.primaryConcern ?? null,
+    via: 'llm+keyword',
+  };
 }
