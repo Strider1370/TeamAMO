@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>곁에 — 입력·결과 레이아웃 레퍼런스</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
+<style>
+:root{--color-background-primary:#fff;--color-background-secondary:#f5f4ef;--color-background-info:#E6F1FB;--color-background-success:#E1F5EE;--color-background-warning:#FAEEDA;--color-background-danger:#FCEBEB;--color-text-primary:#1a1a18;--color-text-secondary:#5F5E5A;--color-text-tertiary:#888780;--color-text-info:#185FA5;--color-text-success:#0F6E56;--color-text-warning:#854F0B;--color-text-danger:#A32D2D;--color-border-tertiary:rgba(0,0,0,.15);--color-border-secondary:rgba(0,0,0,.32);--color-border-info:#378ADD;--border-radius-md:8px;--border-radius-lg:12px}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,'Malgun Gothic',Segoe UI,sans-serif;background:#e9e8e3;color:var(--color-text-primary);margin:0;padding:18px;line-height:1.6}
+button,textarea,select{font-family:inherit}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.frame{max-width:384px;margin:0 auto;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.scr{padding:16px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 10px;border-radius:999px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-bottom:10px}
+.b{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:var(--border-radius-md)}
+.who{font-size:11px;font-weight:500;padding:2px 7px;border-radius:999px;background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.sec{display:flex;align-items:center;gap:8px;margin:18px 0 10px}
+.dot{width:9px;height:9px;border-radius:50%}
+.meta{font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:6px;margin-top:7px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;border-radius:var(--border-radius-md);margin:6px 6px 0 0}
+.lk{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--color-text-info);margin-top:9px;text-decoration:none}
+button{cursor:pointer;border:0.5px solid var(--color-border-secondary);background:transparent;border-radius:var(--border-radius-md);padding:6px 10px}
+textarea,select{width:100%;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px;font-size:14px}
+.spin{display:inline-block;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+</style></head><body>
+<h2 class="sr-only">가족 복지·돌봄 내비게이터 — 입력 화면과 지금/퇴원 후/장기 타임라인 결과 화면 레이아웃 레퍼런스</h2>
+<div class="frame">
+  <div class="bar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <i class="ti ti-route" style="font-size:20px;color:var(--color-text-info)"></i>
+      <span style="font-weight:500;font-size:15px">곁에</span>
+      <span style="font-size:11px;color:var(--color-text-tertiary)">가족 돌봄 길잡이</span>
+    </div>
+    <button id="gear" aria-label="설정" style="width:32px;height:32px;padding:0"><i class="ti ti-settings" style="font-size:17px"></i></button>
+  </div>
+
+  <div id="s1" class="scr">
+    <p style="font-size:17px;font-weight:500;line-height:1.5;margin:6px 0 4px">부모님이 갑자기 아프시면,<br>누구나 처음입니다.</p>
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px">무엇부터 해야 할지 막막한 그 순간 — 상황을 편하게 적어주세요.</p>
+    <textarea id="inp" rows="4">아버지가 뇌졸중으로 입원하셨다가 반신마비로 곧 퇴원하시는데, 어머니 혼자선 못 모시고 저도 직장이 있어 막막해요. 형편도 빠듯하고요.</textarea>
+    <div style="margin:10px 0">
+      <span style="font-size:11px;color:var(--color-text-tertiary)">예시로 채우기</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+        <span class="chip ex" data-t="어머니가 자꾸 깜빡하시고 길을 잃으세요. 혼자 사시는데 어떻게 해야 할지 모르겠어요."><i class="ti ti-brain"></i>치매 의심·독거</span>
+        <span class="chip ex" data-t="아버지가 말기 암 진단을 받으셨어요. 병원비도 걱정이고 마음의 준비도 안 됐습니다."><i class="ti ti-heart-handshake"></i>말기 진단</span>
+        <span class="chip ex" data-t="어머니가 올해 만 65세가 되셨어요. 받을 수 있는 혜택을 한 번에 점검하고 싶어요."><i class="ti ti-cake"></i>은퇴·노년 진입</span>
+      </div>
+    </div>
+    <select style="margin:12px 0"><option>지역 선택 (선택사항)</option><option selected>경기도 · 고양시</option></select>
+    <button id="go" style="width:100%;height:44px;font-size:15px;font-weight:500;border:2px solid var(--color-border-info);color:var(--color-text-info)"><i class="ti ti-sparkles"></i> 오늘 할 일로 정리해줘</button>
+    <button id="quiz" style="width:100%;height:38px;font-size:13px;margin-top:8px;color:var(--color-text-secondary)"><i class="ti ti-list-check"></i> 글로 쓰기 막막하면, 몇 개만 골라보기</button>
+  </div>
+
+  <div id="s2" class="scr" style="display:none;text-align:center;padding:40px 16px">
+    <i class="ti ti-loader-2 spin" style="font-size:28px;color:var(--color-text-info)"></i>
+    <p style="font-size:14px;font-weight:500;margin:12px 0 4px">상황을 이해하는 중…</p>
+    <p style="font-size:12px;color:var(--color-text-tertiary);margin:0 0 14px">읽어낸 내용</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+      <span class="chip" style="cursor:default">아버지 · 뇌졸중/반신마비</span>
+      <span class="chip" style="cursor:default">거동 도움 필요</span>
+      <span class="chip" style="cursor:default">어머니 · 독거</span>
+      <span class="chip" style="cursor:default">자녀 · 직장 병행</span>
+      <span class="chip" style="cursor:default">형편 빠듯</span>
+      <span class="chip" style="cursor:default">경기 고양</span>
+    </div>
+  </div>
+
+  <div id="s3" class="scr" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <p style="font-size:15px;font-weight:500;margin:0">오늘 할 일 8가지를 찾았어요</p>
+      <button id="back" aria-label="다시" style="width:30px;height:30px;padding:0"><i class="ti ti-arrow-back-up" style="font-size:16px"></i></button>
+    </div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 4px">아버지(뇌졸중·거동 도움) · 어머니(독거) · 자녀(직장 병행) 기준. 자격은 <b style="font-weight:500">받을 가능성</b>이며 공식 링크로 꼭 확인하세요.</p>
+
+    <div class="sec"><span class="dot" style="background:var(--color-text-danger)"></span><span style="font-size:13px;font-weight:500">지금</span><span style="font-size:11px;color:var(--color-text-tertiary)">가장 급함</span></div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">아버지</span> <span style="font-weight:500;font-size:14px">장기요양 인정신청</span></div>
+        <span class="b" style="background:var(--color-background-warning);color:var(--color-text-warning)"><i class="ti ti-alert-triangle"></i>확인 필요</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">거동이 어려워지셨다면 모든 재가 돌봄의 <b style="font-weight:500">출발점</b>. 이 등급이 나와야 아래 복지용구·방문요양이 열립니다.</p>
+      <div class="meta"><i class="ti ti-phone"></i><a href="tel:1577-1000" style="color:var(--color-text-info);text-decoration:none">국민건강보험공단 · 1577-1000</a></div>
+      <div>
+        <span class="tag" style="background:var(--color-background-info);color:var(--color-text-info)"><i class="ti ti-arrow-ramp-right-2"></i>이게 되면 → 복지용구·방문요양 열림</span>
+        <span class="tag" style="background:var(--color-background-secondary);color:var(--color-text-secondary)"><i class="ti ti-arrows-split-2"></i>노인맞춤돌봄과 택일</span>
+        <span class="tag" style="background:var(--color-background-secondary);color:var(--color-text-secondary)"><i class="ti ti-clock"></i>판정 ~30일</span>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-tertiary);margin:8px 0 0"><i class="ti ti-file-text"></i> 신청서 · 의사소견서 · 신분증</p>
+      <a class="lk" href="https://www.longtermcare.or.kr"><i class="ti ti-external-link"></i>공단에서 신청 방법 보기</a>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">아버지</span> <span style="font-weight:500;font-size:14px">재난적의료비 지원</span></div>
+        <span class="b" style="background:var(--color-background-success);color:var(--color-text-success)"><i class="ti ti-check"></i>받을 가능성</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">큰 병원비가 났을 때 소득 대비 과도한 본인부담을 돌려받을 수 있어요.</p>
+      <div class="meta"><i class="ti ti-phone"></i><a href="tel:1577-1000" style="color:var(--color-text-info);text-decoration:none">건강보험공단 지사</a></div>
+      <div><span class="tag" style="background:var(--color-background-danger);color:var(--color-text-danger)"><i class="ti ti-calendar-exclamation"></i>퇴원 후 180일 이내</span></div>
+      <a class="lk" href="https://www.nhis.or.kr"><i class="ti ti-external-link"></i>대상·서류 확인</a>
+    </div>
+
+    <div class="sec"><span class="dot" style="background:var(--color-text-info)"></span><span style="font-size:13px;font-weight:500">퇴원 후</span><span style="font-size:11px;color:var(--color-text-tertiary)">등급이 나오면</span></div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">아버지</span> <span style="font-weight:500;font-size:14px">복지용구 · 방문요양</span></div>
+        <span class="b" style="background:var(--color-background-success);color:var(--color-text-success)"><i class="ti ti-check"></i>받을 가능성</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">집에서의 돌봄. 휠체어·안전손잡이(연 160만원 한도)와 요양보호사 방문.</p>
+      <div><span class="tag" style="background:var(--color-background-info);color:var(--color-text-info)"><i class="ti ti-lock-open"></i>선행: 장기요양 등급</span></div>
+      <a class="lk" href="https://www.longtermcare.or.kr"><i class="ti ti-external-link"></i>이용 방법 보기</a>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">어머니</span> <span style="font-weight:500;font-size:14px">응급안전안심서비스</span></div>
+        <span class="b" style="background:var(--color-background-success);color:var(--color-text-success)"><i class="ti ti-check"></i>받을 가능성</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">혼자 계신 어머니 댁에 화재·응급 감지기 무료 설치 (2026년 소득기준 폐지).</p>
+      <div class="meta"><i class="ti ti-map-pin"></i>주소지 읍·면·동 · <a href="#" style="color:var(--color-text-info);text-decoration:none">가까운 곳 지도</a></div>
+      <a class="lk" href="https://www.gov.kr"><i class="ti ti-external-link"></i>신청 안내</a>
+    </div>
+
+    <div class="sec"><span class="dot" style="background:var(--color-text-tertiary)"></span><span style="font-size:13px;font-weight:500">장기</span><span style="font-size:11px;color:var(--color-text-tertiary)">놓치기 쉬운 것</span></div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">아버지</span> <span style="font-weight:500;font-size:14px">장애인 등록</span></div>
+        <span class="b" style="background:var(--color-background-warning);color:var(--color-text-warning)"><i class="ti ti-alert-triangle"></i>확인 필요</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">뇌졸중 후유장애가 고착되면 <b style="font-weight:500">장기요양과 별개로</b> 장애인연금·활동지원의 문이 열려요. 가장 많이 놓치는 부분.</p>
+      <div><span class="tag" style="background:var(--color-background-secondary);color:var(--color-text-secondary)"><i class="ti ti-git-branch"></i>별도 트랙 → 장애인연금·활동지원</span></div>
+      <a class="lk" href="https://www.mohw.go.kr"><i class="ti ti-external-link"></i>등록 절차 보기</a>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div><span class="who">자녀(나)</span> <span style="font-weight:500;font-size:14px">가족돌봄휴직</span></div>
+        <span class="b" style="background:var(--color-background-success);color:var(--color-text-success)"><i class="ti ti-check"></i>받을 가능성</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--color-text-secondary);margin:7px 0 0">돌보는 사람도 챙겨야죠. 부모 돌봄을 위해 연 90일(무급)까지 사업주에 신청.</p>
+      <div class="meta"><i class="ti ti-briefcase"></i>재직 중인 회사</div>
+      <a class="lk" href="https://www.worklife.kr"><i class="ti ti-external-link"></i>요건 보기</a>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button style="flex:1;height:40px;font-size:13px"><i class="ti ti-photo-down"></i> 이미지 저장</button>
+      <button style="flex:1;height:40px;font-size:13px"><i class="ti ti-share"></i> 가족과 공유</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var s1=document.getElementById('s1'),s2=document.getElementById('s2'),s3=document.getElementById('s3');
+  function show(n){s1.style.display=n==1?'block':'none';s2.style.display=n==2?'block':'none';s3.style.display=n==3?'block':'none';}
+  document.getElementById('go').onclick=function(){show(2);setTimeout(function(){show(3);},1100);};
+  document.getElementById('back').onclick=function(){show(1);};
+  document.querySelectorAll('.ex').forEach(function(c){c.onclick=function(){document.getElementById('inp').value=c.getAttribute('data-t');};});
+  show(1);
+})();
+</script>
+</body></html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>곁에 — 질문지 보조 입구 레이아웃 레퍼런스</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
+<style>
+:root{--color-background-primary:#fff;--color-background-secondary:#f5f4ef;--color-background-info:#E6F1FB;--color-text-primary:#1a1a18;--color-text-secondary:#5F5E5A;--color-text-tertiary:#888780;--color-text-info:#185FA5;--color-border-tertiary:rgba(0,0,0,.15);--color-border-secondary:rgba(0,0,0,.32);--color-border-info:#378ADD;--border-radius-md:8px;--border-radius-lg:12px}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,'Malgun Gothic',Segoe UI,sans-serif;background:#e9e8e3;color:var(--color-text-primary);margin:0;padding:18px;line-height:1.6}
+button{font-family:inherit;cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.frame{max-width:384px;margin:0 auto;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.scr{padding:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.scard{text-align:left;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;background:var(--color-background-primary);cursor:pointer}
+.scard.on{border:2px solid var(--color-border-info);background:var(--color-background-info)}
+.q{margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:9px 12px;margin-top:6px;background:var(--color-background-primary);font-size:13px;cursor:pointer}
+.opt.on{border:2px solid var(--color-border-info);background:var(--color-background-info);color:var(--color-text-info)}
+.tray{border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);padding:12px 16px}
+.sl{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:999px;background:var(--color-background-info);color:var(--color-text-info);margin:4px 4px 0 0}
+button.nav{border:0.5px solid var(--color-border-secondary);background:transparent;border-radius:var(--border-radius-md)}
+</style></head><body>
+<h2 class="sr-only">질문지 보조 입구 — 상황 복수선택 후 후속 질문에 답하면 자연어와 같은 슬롯으로 모이는 레이아웃 레퍼런스</h2>
+<div class="frame">
+  <div class="bar">
+    <button id="back" class="nav" aria-label="뒤로" style="width:30px;height:30px;padding:0"><i class="ti ti-arrow-left" style="font-size:17px"></i></button>
+    <span style="font-weight:500;font-size:14px">몇 개만 골라보기</span>
+    <span id="step" style="margin-left:auto;font-size:11px;color:var(--color-text-tertiary)">1 / 2</span>
+  </div>
+
+  <div id="a" class="scr">
+    <p style="font-size:16px;font-weight:500;margin:4px 0 2px">어떤 일이 생겼나요?</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 12px">가장 가까운 상황을 골라 주세요. 여러 개여도 괜찮아요.</p>
+    <div class="grid">
+      <button class="scard" data-s="노년진입"><i class="ti ti-sunrise" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">나이 들고 은퇴하셨어요</div></button>
+      <button class="scard on" data-s="입원"><i class="ti ti-building-hospital" style="font-size:18px;color:var(--color-text-info)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">갑자기 아프거나 입원했어요</div></button>
+      <button class="scard on" data-s="퇴원ADL"><i class="ti ti-walk" style="font-size:18px;color:var(--color-text-info)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">퇴원 후 생활이 어려워요</div></button>
+      <button class="scard" data-s="노쇠치매"><i class="ti ti-brain" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">기억이 깜빡·노쇠해졌어요</div></button>
+      <button class="scard" data-s="가족환경"><i class="ti ti-home" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">혼자 사시거나 상황이 바뀌었어요</div></button>
+      <button class="scard" data-s="경제주거"><i class="ti ti-wallet" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">생활비·주거가 빠듯해요</div></button>
+      <button class="scard" data-s="말기임종"><i class="ti ti-candle" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">임종이 가깝거나 돌아가셨어요</div></button>
+      <button class="scard" data-s="장애등록"><i class="ti ti-wheelchair" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">후유증이 영구적으로 남았어요</div></button>
+      <button class="scard" data-s="권리안전"><i class="ti ti-shield" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">학대·착취·안전이 걱정돼요</div></button>
+      <button class="scard" data-s="돌봄자지원"><i class="ti ti-heart-handshake" style="font-size:18px;color:var(--color-text-secondary)"></i><div style="font-size:12.5px;font-weight:500;margin-top:5px">돌보는 제가 너무 힘들어요</div></button>
+    </div>
+    <button id="next" class="nav" style="width:100%;height:44px;font-size:15px;font-weight:500;margin-top:14px;border:2px solid var(--color-border-info);color:var(--color-text-info)">다음 · <span id="cnt">2</span>개 선택</button>
+  </div>
+
+  <div id="b" style="display:none">
+    <div class="scr" style="padding-bottom:8px">
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:2px 0 14px">선택하신 상황에 대해 몇 가지만 여쭤볼게요.</p>
+      <p style="font-size:11px;font-weight:500;color:var(--color-text-info);margin:0 0 8px"><i class="ti ti-building-hospital"></i> 입원</p>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">누가 입원하셨나요?</p>
+        <button class="opt on" data-g="t" data-e="대상:아버지">아버지</button>
+        <button class="opt" data-g="t" data-e="대상:어머니">어머니</button>
+        <button class="opt" data-g="t" data-e="대상:배우자">배우자</button>
+      </div>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">왜 입원하셨나요?</p>
+        <button class="opt" data-g="c" data-e="질환:암">암 진단</button>
+        <button class="opt on" data-g="c" data-e="질환:뇌졸중">뇌졸중(뇌출혈·뇌경색)</button>
+        <button class="opt" data-g="c" data-e="질환:골절">골절·낙상</button>
+        <button class="opt" data-g="c" data-e="질환:기타">수술 / 그 외 중한 병</button>
+      </div>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">병원비 부담은 어떠세요?</p>
+        <button class="opt on" data-g="cost" data-e="위기사유">감당하기 힘들 정도예요</button>
+        <button class="opt" data-g="cost" data-e="기초수급">수급·차상위라 부담이 커요</button>
+        <button class="opt" data-g="cost" data-e="">아직 견딜 만해요</button>
+      </div>
+      <p style="font-size:11px;font-weight:500;color:var(--color-text-info);margin:14px 0 8px"><i class="ti ti-walk"></i> 퇴원 후 생활</p>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">지금 어떤 상황인가요?</p>
+        <button class="opt on" data-g="ev" data-e="퇴원">곧 퇴원해요(또는 막 퇴원)</button>
+        <button class="opt" data-g="ev" data-e="">퇴원한 지 됐는데 점점 힘들어해요</button>
+      </div>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">어떤 도움이 필요하세요? <span style="font-weight:400;color:var(--color-text-tertiary);font-size:11px">복수 선택</span></p>
+        <button class="opt on" data-g="adl" data-multi="1" data-e="도움 필요">씻기·식사·화장실 도움</button>
+        <button class="opt" data-g="adl" data-multi="1" data-e="보조기기 필요">지팡이·휠체어가 필요해요</button>
+      </div>
+      <div class="q"><p style="font-size:13.5px;font-weight:500;margin:0">만 65세 이상이신가요?</p>
+        <button class="opt on" data-g="age" data-e="65세+">네, 65세 이상</button>
+        <button class="opt" data-g="age" data-e="노인성질병">65세 미만이지만 뇌졸중·치매 있어요</button>
+      </div>
+    </div>
+    <div class="tray">
+      <p style="font-size:11px;color:var(--color-text-tertiary);margin:0 0 2px"><i class="ti ti-arrow-down-to-arc"></i> 읽어낸 슬롯 — 자연어 입력과 같은 형태로 모입니다</p>
+      <div id="slots"></div>
+      <button class="nav" style="width:100%;height:42px;font-size:14px;font-weight:500;margin-top:12px;border:2px solid var(--color-border-info);color:var(--color-text-info)"><i class="ti ti-sparkles"></i> 이 답으로 오늘 할 일 정리</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var a=document.getElementById('a'),b=document.getElementById('b'),step=document.getElementById('step');
+  function cnt(){document.getElementById('cnt').textContent=a.querySelectorAll('.scard.on').length;}
+  a.querySelectorAll('.scard').forEach(function(c){c.onclick=function(){c.classList.toggle('on');c.querySelector('i').style.color=c.classList.contains('on')?'var(--color-text-info)':'var(--color-text-secondary)';cnt();};});
+  function tray(){var seen={},out=[];b.querySelectorAll('.opt.on').forEach(function(o){var e=o.getAttribute('data-e');if(e&&!seen[e]){seen[e]=1;out.push(e);}});document.getElementById('slots').innerHTML=out.map(function(s){return '<span class="sl"><i class="ti ti-check"></i>'+s+'</span>';}).join('');}
+  b.querySelectorAll('.opt').forEach(function(o){o.onclick=function(){if(o.getAttribute('data-multi')){o.classList.toggle('on');}else{b.querySelectorAll('.opt[data-g="'+o.getAttribute('data-g')+'"]').forEach(function(x){x.classList.remove('on');});o.classList.add('on');}tray();};});
+  document.getElementById('next').onclick=function(){a.style.display='none';b.style.display='block';step.textContent='2 / 2';tray();};
+  document.getElementById('back').onclick=function(){if(b.style.display!=='none'){b.style.display='none';a.style.display='block';step.textContent='1 / 2';}};
+  cnt();tray();
+})();
+</script>
+</body></html>

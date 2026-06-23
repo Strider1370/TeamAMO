@@ -35,6 +35,7 @@
 3. **시간축** — 지금 / 퇴원 전·후 / 장기
 
 ## 5. Solution — 입력 → 처리 → 출력 → 다음 행동
+> 레이아웃 기준(블루프린트): `design/mockups/01-input-result.html`(입력·이해중·타임라인 결과) · `design/mockups/02-questionnaire.html`(질문지 보조입구). 빌드는 이 목업을 KRDS/Next로 재구현.
 
 ### 5.1 입력 (화면 1)
 - **[P0] 자연어 한 칸** (큰 textarea): "부모님 상황을 편하게 적어주세요." 주인공.
