@@ -1,0 +1,407 @@
+{
+  "version": "1.0",
+  "verifiedAt": "2026-06-23",
+  "note": "질문지 입력과 자연어 입력은 동일한 slots 객체로 수렴한다. 슬롯 어휘는 data/welfare/curated/*.json 의 eligibility.slots 및 research/06-situation-catalog.md Task3 규칙과 동일하게 맞춘다. 질문지는 자격을 판정하지 않고 slots만 만든다 — 최종 확인은 각 제도의 공식 링크.",
+  "slotSchema": {
+    "target": ["부", "모", "본인", "배우자"],
+    "age": [">=65", ">=60", ">=18", ">=19", "<65"],
+    "condition": ["치매", "뇌졸중", "골절", "암", "파킨슨", "중증화상", "희귀난치", "기타"],
+    "adl": ["도움 필요", "보조기기 필요", "독립"],
+    "household": ["독거", "노인2인", "조손", "동거"],
+    "incomeBand": ["기초수급", "차상위", "기초연금", "일반"],
+    "lifeEvent": ["입원", "퇴원", "진단", "사별", "은퇴", "위기사유"],
+    "caregiver": ["자녀 직장병행", "소진"],
+    "permanentDisability": ["후유장애", "없음"],
+    "region": "자유 문자열(시군구)"
+  },
+  "entry": {
+    "question": "어떤 일이 생겼나요?",
+    "hint": "가장 가까운 상황을 골라 주세요. 여러 개여도 괜찮아요. (해당하는 것을 모두 선택)",
+    "multiSelect": true,
+    "cards": [
+      {
+        "situation": "노년진입",
+        "label": "나이 들고 은퇴하셨어요",
+        "desc": "만 65세가 되었거나 퇴직해서 생활이 달라졌어요",
+        "iconCandidates": ["sunrise", "user-clock", "calendar-check"]
+      },
+      {
+        "situation": "입원",
+        "label": "갑자기 아프거나 입원했어요",
+        "desc": "수술·뇌졸중·골절·암 진단 등으로 병원에 계세요",
+        "iconCandidates": ["hospital", "bed-pulse", "ambulance"]
+      },
+      {
+        "situation": "퇴원ADL",
+        "label": "퇴원 후 혼자 생활이 어려워요",
+        "desc": "씻기·식사·화장실 등 일상에 도움이 필요해요",
+        "iconCandidates": ["walking-cane", "hands-helping", "house-medical"]
+      },
+      {
+        "situation": "노쇠치매",
+        "label": "기억이 깜빡하거나 부쩍 노쇠해졌어요",
+        "desc": "치매가 의심되거나 거동·인지가 약해지기 시작했어요",
+        "iconCandidates": ["brain", "memory", "puzzle-piece"]
+      },
+      {
+        "situation": "가족환경",
+        "label": "혼자 사시거나 가족 상황이 바뀌었어요",
+        "desc": "독거·배우자 사별 등으로 돌봄 환경이 달라졌어요",
+        "iconCandidates": ["house-user", "heart-crack", "people-roof"]
+      },
+      {
+        "situation": "경제주거",
+        "label": "생활비·주거가 빠듯해요",
+        "desc": "병원비·월세·공과금 부담으로 형편이 어려워요",
+        "iconCandidates": ["wallet", "house-dollar", "hand-holding-coin"]
+      },
+      {
+        "situation": "말기임종",
+        "label": "임종이 가깝거나 막 돌아가셨어요",
+        "desc": "말기·호스피스, 또는 사망 직후 행정이 필요해요",
+        "iconCandidates": ["dove", "candle", "scroll"]
+      },
+      {
+        "situation": "장애등록",
+        "label": "후유증으로 거동·인지가 영구 저하됐어요",
+        "desc": "뇌졸중·파킨슨 후유증 등으로 장애등록이 필요할 수 있어요",
+        "iconCandidates": ["wheelchair", "id-card", "clipboard-medical"]
+      },
+      {
+        "situation": "권리안전",
+        "label": "학대·재산 착취·안전이 걱정돼요",
+        "desc": "방임·금융사기·판단능력 저하로 보호가 필요해요",
+        "iconCandidates": ["shield-halved", "phone-volume", "scale-balanced"]
+      },
+      {
+        "situation": "돌봄자지원",
+        "label": "돌보는 제(자녀)가 너무 힘들어요",
+        "desc": "일과 돌봄을 같이 하느라 지쳤어요",
+        "iconCandidates": ["user-nurse", "battery-low", "heart-pulse"]
+      }
+    ]
+  },
+  "followups": {
+    "노년진입": [
+      {
+        "id": "노년진입-age",
+        "question": "연세가 어떻게 되세요?",
+        "options": [
+          { "label": "만 65세 이상", "emits": { "age": ">=65" } },
+          { "label": "만 60~64세", "emits": { "age": ">=60" } },
+          { "label": "만 60세 미만", "emits": { "age": "<65" } }
+        ]
+      },
+      {
+        "id": "노년진입-income",
+        "question": "소득 형편은 어느 정도인가요?",
+        "hint": "정확하지 않아도 됩니다. 대략 골라 주세요.",
+        "options": [
+          { "label": "기초생활수급자예요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "차상위계층이에요", "emits": { "incomeBand": "차상위" } },
+          { "label": "기초연금을 받아요", "emits": { "incomeBand": "기초연금" } },
+          { "label": "특별히 해당 없어요 / 잘 모르겠어요", "emits": { "incomeBand": "일반" } }
+        ]
+      },
+      {
+        "id": "노년진입-event",
+        "question": "최근 퇴직(은퇴)하셨나요?",
+        "options": [
+          { "label": "네, 막 은퇴했어요", "emits": { "lifeEvent": "은퇴" } },
+          { "label": "아니요 / 해당 없어요", "emits": {} }
+        ]
+      }
+    ],
+    "입원": [
+      {
+        "id": "입원-target",
+        "question": "누가 입원하셨나요?",
+        "options": [
+          { "label": "아버지", "emits": { "target": "부", "lifeEvent": "입원" } },
+          { "label": "어머니", "emits": { "target": "모", "lifeEvent": "입원" } },
+          { "label": "배우자", "emits": { "target": "배우자", "lifeEvent": "입원" } },
+          { "label": "본인", "emits": { "target": "본인", "lifeEvent": "입원" } }
+        ]
+      },
+      {
+        "id": "입원-condition",
+        "question": "왜 입원하셨나요?",
+        "hint": "가장 가까운 것을 골라 주세요.",
+        "options": [
+          { "label": "암 진단", "emits": { "condition": "암", "lifeEvent": "진단" } },
+          { "label": "뇌졸중(뇌출혈·뇌경색)", "emits": { "condition": "뇌졸중" } },
+          { "label": "골절·낙상", "emits": { "condition": "골절" } },
+          { "label": "수술 / 그 외 중한 질병", "emits": { "condition": "기타" } }
+        ]
+      },
+      {
+        "id": "입원-cost",
+        "question": "병원비 부담은 어떠세요?",
+        "options": [
+          { "label": "감당하기 힘들 정도로 커요", "emits": { "incomeBand": "일반", "lifeEvent": "위기사유" } },
+          { "label": "기초수급·차상위라 부담이 커요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "아직은 견딜 만해요", "emits": {} }
+        ]
+      },
+      {
+        "id": "입원-discharge",
+        "question": "곧 퇴원하시나요?",
+        "options": [
+          { "label": "곧 퇴원해요(또는 퇴원했어요)", "emits": { "lifeEvent": "퇴원" } },
+          { "label": "아직 입원 중이에요", "emits": {} }
+        ]
+      }
+    ],
+    "퇴원ADL": [
+      {
+        "id": "퇴원ADL-event",
+        "question": "지금 어떤 상황인가요?",
+        "options": [
+          { "label": "곧 퇴원해요(또는 막 퇴원했어요)", "emits": { "lifeEvent": "퇴원" } },
+          { "label": "퇴원한 지 좀 됐는데 점점 힘들어해요", "emits": {} }
+        ]
+      },
+      {
+        "id": "퇴원ADL-adl",
+        "question": "일상생활에서 어떤 도움이 필요하세요?",
+        "hint": "해당하는 것을 모두 선택.",
+        "multiSelect": true,
+        "options": [
+          { "label": "씻기·식사·화장실에 도움이 필요해요", "emits": { "adl": "도움 필요" } },
+          { "label": "지팡이·휠체어 같은 보조기기가 필요해요", "emits": { "adl": "보조기기 필요" } },
+          { "label": "거동은 되는데 혼자는 불안해요", "emits": { "adl": "도움 필요" } }
+        ]
+      },
+      {
+        "id": "퇴원ADL-age",
+        "question": "연세가 만 65세 이상이신가요?",
+        "hint": "65세 미만이어도 치매·뇌졸중 등 노인성 질병이면 장기요양 대상이 될 수 있어요.",
+        "options": [
+          { "label": "네, 만 65세 이상이에요", "emits": { "age": ">=65" } },
+          { "label": "65세 미만이지만 치매·뇌졸중 등이 있어요", "emits": { "age": "<65", "condition": "기타" } },
+          { "label": "65세 미만이에요", "emits": { "age": "<65" } }
+        ]
+      }
+    ],
+    "노쇠치매": [
+      {
+        "id": "노쇠치매-target",
+        "question": "어느 분 이야기인가요?",
+        "options": [
+          { "label": "아버지", "emits": { "target": "부" } },
+          { "label": "어머니", "emits": { "target": "모" } },
+          { "label": "배우자", "emits": { "target": "배우자" } }
+        ]
+      },
+      {
+        "id": "노쇠치매-condition",
+        "question": "어떤 모습이 보이세요?",
+        "hint": "해당하는 것을 모두 선택.",
+        "multiSelect": true,
+        "options": [
+          { "label": "자꾸 깜빡하고 같은 말을 반복해요", "emits": { "condition": "치매" } },
+          { "label": "길을 잃거나 집을 못 찾은 적이 있어요", "emits": { "condition": "치매" } },
+          { "label": "병원에서 치매(또는 경도인지장애) 진단을 받았어요", "emits": { "condition": "치매", "lifeEvent": "진단" } },
+          { "label": "파킨슨 등 다른 진단을 받았어요", "emits": { "condition": "파킨슨", "lifeEvent": "진단" } }
+        ]
+      },
+      {
+        "id": "노쇠치매-household",
+        "question": "어떻게 지내세요?",
+        "options": [
+          { "label": "혼자 사세요", "emits": { "household": "독거" } },
+          { "label": "노부부 두 분이 지내세요", "emits": { "household": "노인2인" } },
+          { "label": "가족과 함께 살아요", "emits": { "household": "동거" } }
+        ]
+      },
+      {
+        "id": "노쇠치매-income",
+        "question": "소득 형편은 어느 정도인가요?",
+        "options": [
+          { "label": "기초생활수급자예요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "차상위계층이에요", "emits": { "incomeBand": "차상위" } },
+          { "label": "기초연금을 받아요", "emits": { "incomeBand": "기초연금" } },
+          { "label": "특별히 해당 없어요 / 잘 모르겠어요", "emits": { "incomeBand": "일반" } }
+        ]
+      }
+    ],
+    "가족환경": [
+      {
+        "id": "가족환경-household",
+        "question": "지금 어떻게 지내세요?",
+        "options": [
+          { "label": "혼자 사세요(독거)", "emits": { "household": "독거" } },
+          { "label": "노부부 두 분이 지내세요", "emits": { "household": "노인2인" } },
+          { "label": "손주와 함께 사세요(조손)", "emits": { "household": "조손" } }
+        ]
+      },
+      {
+        "id": "가족환경-event",
+        "question": "최근 가족에 변화가 있었나요?",
+        "options": [
+          { "label": "배우자와 사별했어요", "emits": { "lifeEvent": "사별" } },
+          { "label": "자녀가 분가하는 등 가구원이 바뀌었어요", "emits": { "lifeEvent": "사별" } },
+          { "label": "특별한 변화는 없어요", "emits": {} }
+        ]
+      },
+      {
+        "id": "가족환경-age",
+        "question": "연세가 만 65세 이상이신가요?",
+        "options": [
+          { "label": "네, 만 65세 이상이에요", "emits": { "age": ">=65" } },
+          { "label": "아니요", "emits": { "age": "<65" } }
+        ]
+      }
+    ],
+    "경제주거": [
+      {
+        "id": "경제주거-income",
+        "question": "현재 소득·자격 상황은 어떤가요?",
+        "options": [
+          { "label": "기초생활수급자예요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "차상위계층이에요", "emits": { "incomeBand": "차상위" } },
+          { "label": "기초연금을 받아요", "emits": { "incomeBand": "기초연금" } },
+          { "label": "해당 없음 / 잘 모르겠어요", "emits": { "incomeBand": "일반" } }
+        ]
+      },
+      {
+        "id": "경제주거-problem",
+        "question": "어떤 점이 가장 부담되세요?",
+        "hint": "해당하는 것을 모두 선택.",
+        "multiSelect": true,
+        "options": [
+          { "label": "당장 생활비가 없어요(위기 상황)", "emits": { "lifeEvent": "위기사유" } },
+          { "label": "월세·주거가 불안해요", "emits": {} },
+          { "label": "난방·전기 같은 공과금이 버거워요", "emits": {} },
+          { "label": "병원비가 너무 많이 나왔어요", "emits": {} }
+        ]
+      },
+      {
+        "id": "경제주거-age",
+        "question": "연세가 만 65세 이상이신가요?",
+        "options": [
+          { "label": "네", "emits": { "age": ">=65" } },
+          { "label": "아니요", "emits": { "age": "<65" } }
+        ]
+      }
+    ],
+    "말기임종": [
+      {
+        "id": "말기임종-phase",
+        "question": "지금 어떤 단계인가요?",
+        "options": [
+          { "label": "말기 진단을 받았고 임종이 가까워요", "emits": { "lifeEvent": "진단" } },
+          { "label": "연명치료를 어떻게 할지 정해두고 싶어요", "emits": {} },
+          { "label": "막 돌아가셨어요(사후 행정이 필요해요)", "emits": { "lifeEvent": "사별" } }
+        ]
+      },
+      {
+        "id": "말기임종-income",
+        "question": "고인(또는 환자)이 기초생활수급자였나요?",
+        "hint": "장제급여 등은 수급자 대상이라 여쭤봐요.",
+        "options": [
+          { "label": "네, 기초생활수급자였어요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "아니요 / 잘 모르겠어요", "emits": { "incomeBand": "일반" } }
+        ]
+      },
+      {
+        "id": "말기임종-pension",
+        "question": "국민연금에 가입하셨던 분인가요?",
+        "hint": "유족연금·사망일시금 안내를 위해서예요.",
+        "options": [
+          { "label": "네, 국민연금 가입/수급자였어요", "emits": {} },
+          { "label": "아니요 / 잘 모르겠어요", "emits": {} }
+        ]
+      }
+    ],
+    "장애등록": [
+      {
+        "id": "장애등록-condition",
+        "question": "어떤 후유증이 남았나요?",
+        "options": [
+          { "label": "뇌졸중 후유증(마비 등)", "emits": { "condition": "뇌졸중", "permanentDisability": "후유장애" } },
+          { "label": "파킨슨병", "emits": { "condition": "파킨슨", "permanentDisability": "후유장애" } },
+          { "label": "치매로 인지가 많이 떨어졌어요", "emits": { "condition": "치매", "permanentDisability": "후유장애" } },
+          { "label": "그 외 영구적인 거동·인지 저하", "emits": { "condition": "기타", "permanentDisability": "후유장애" } }
+        ]
+      },
+      {
+        "id": "장애등록-adl",
+        "question": "일상생활에 도움이 필요한 정도인가요?",
+        "options": [
+          { "label": "혼자서는 일상생활이 어려워요", "emits": { "adl": "도움 필요" } },
+          { "label": "보조기기가 있으면 가능해요", "emits": { "adl": "보조기기 필요" } }
+        ]
+      },
+      {
+        "id": "장애등록-income",
+        "question": "소득 형편은 어느 정도인가요?",
+        "hint": "장애인연금 등은 소득기준이 있어요.",
+        "options": [
+          { "label": "기초생활수급자예요", "emits": { "incomeBand": "기초수급" } },
+          { "label": "차상위계층이에요", "emits": { "incomeBand": "차상위" } },
+          { "label": "해당 없음 / 잘 모르겠어요", "emits": { "incomeBand": "일반" } }
+        ]
+      }
+    ],
+    "권리안전": [
+      {
+        "id": "권리안전-issue",
+        "question": "어떤 점이 걱정되세요?",
+        "hint": "해당하는 것을 모두 선택.",
+        "multiSelect": true,
+        "options": [
+          { "label": "학대·방임이 의심돼요", "emits": {} },
+          { "label": "재산·금융 사기(착취)가 걱정돼요", "emits": {} },
+          { "label": "판단능력이 떨어져 대신 결정해 줄 사람이 필요해요", "emits": { "condition": "치매" } }
+        ]
+      },
+      {
+        "id": "권리안전-household",
+        "question": "지금 어떻게 지내세요?",
+        "options": [
+          { "label": "혼자 사세요(독거)", "emits": { "household": "독거" } },
+          { "label": "가족과 함께 살아요", "emits": { "household": "동거" } }
+        ]
+      },
+      {
+        "id": "권리안전-age",
+        "question": "연세가 만 65세 이상이신가요?",
+        "options": [
+          { "label": "네", "emits": { "age": ">=65" } },
+          { "label": "아니요", "emits": { "age": "<65" } }
+        ]
+      }
+    ],
+    "돌봄자지원": [
+      {
+        "id": "돌봄자지원-caregiver",
+        "question": "지금 가장 힘든 점은 무엇인가요?",
+        "hint": "해당하는 것을 모두 선택.",
+        "multiSelect": true,
+        "options": [
+          { "label": "일과 돌봄을 같이 하기 벅차요", "emits": { "caregiver": "자녀 직장병행" } },
+          { "label": "몸과 마음이 지쳐서 좀 쉬고 싶어요", "emits": { "caregiver": "소진" } }
+        ]
+      },
+      {
+        "id": "돌봄자지원-employment",
+        "question": "지금 직장에 다니고 계신가요?",
+        "hint": "가족돌봄휴직·휴가·근로시간 단축은 재직 근로자가 대상이에요.",
+        "options": [
+          { "label": "네, 재직 중이에요", "emits": { "caregiver": "자녀 직장병행" } },
+          { "label": "아니요", "emits": {} }
+        ]
+      },
+      {
+        "id": "돌봄자지원-ltci",
+        "question": "돌보는 부모님이 장기요양 등급을 받으셨나요?",
+        "hint": "가족휴가제(단기보호)는 장기요양 수급자 가족이 쓸 수 있어요.",
+        "options": [
+          { "label": "네, 등급을 받았어요", "emits": {} },
+          { "label": "아니요 / 잘 모르겠어요", "emits": {} }
+        ]
+      }
+    ]
+  }
+}
