@@ -73,6 +73,15 @@ export function matchPrograms(input, { rules, curated }) {
     }
   }
 
+  // STEP 4.5 — 제외(직접혜택 아님) + 사망게이트(말기임종 신호 없으면 사망 관련 제도 차단)
+  const excludeSet = new Set(rules.excludeIds?.ids || []);
+  const deathSet = new Set(rules.deathGate?.ids || []);
+  const deathLit = lit.has(rules.deathGate?.situation || '말기임종');
+  for (const id of [...pool.keys()]) {
+    if (excludeSet.has(id)) { pool.delete(id); continue; }
+    if (deathSet.has(id) && !deathLit) pool.delete(id);
+  }
+
   // STEP 5 — 배지 + 관련도 점수 (결정론적)
   for (const e of pool.values()) {
     const p = e.prog;

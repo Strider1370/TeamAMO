@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 // @ts-expect-error — 순수 .mjs 엔진/추출 모듈(공유). 타입 없음.
-import { extractSignals, visionExtract, mergeSignals } from '@/lib/extract.mjs';
+import { extractSignals, visionExtract, mergeSignals, rankByRelevance } from '@/lib/extract.mjs';
 // @ts-expect-error
 import { matchPrograms } from '@/lib/engine.mjs';
 
@@ -57,5 +57,24 @@ export async function POST(req: Request) {
     { situations: signals.situations, slots: signals.slots, primaryConcern: signals.primaryConcern },
     { rules, curated },
   );
+
+  // LLM 관련도 정렬 — 코드가 고른 후보의 '순서'만 재정렬(선택·추가는 코드). 실패 시 결정론 순서 유지.
+  const rankText = text || Object.values(signals.slots || {}).flat().join(', ');
+  if (apiKey && rankText) {
+    try {
+      const items: { id: string; name: string }[] = [];
+      for (const b of Object.keys(result.timeline)) for (const c of result.timeline[b]) items.push({ id: c.id, name: c.name });
+      const order = await rankByRelevance({ text: rankText, items }, { apiKey, model });
+      if (order) {
+        const idx = new Map<string, number>(order.map((id: string, i: number) => [id, i]));
+        for (const b of Object.keys(result.timeline)) {
+          result.timeline[b].sort((a: any, c: any) => (idx.get(a.id) ?? 1e9) - (idx.get(c.id) ?? 1e9));
+          result.timeline[b].forEach((c: any, i: number) => { c.core = c.boosted || i < 4; });
+        }
+        result.rankedBy = 'llm';
+      }
+    } catch { /* 결정론 순서 유지 */ }
+  }
+
   return NextResponse.json({ signals, result });
 }

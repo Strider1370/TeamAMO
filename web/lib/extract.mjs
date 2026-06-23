@@ -164,3 +164,31 @@ export async function extractSignals(text, { dict, apiKey, model }) {
     via: 'llm+keyword',
   };
 }
+
+/** LLM 관련도 정렬 — 코드가 고른 후보의 '순서'만 재정렬(선택·추가 금지). 실패 시 null → 결정론 순서 유지. */
+export async function rankByRelevance({ text, items }, { apiKey, model }) {
+  if (!apiKey || !items?.length) return null;
+  const isNewGen = /^(gpt-5|o\d)/.test(model || '');
+  const list = items.map((it) => `${it.id} :: ${it.name}`).join('\n');
+  const sys = `사용자가 적은 가족 돌봄 상황과 후보 지원 제도 목록(id :: 이름)이 주어진다. 이 가정 상황에 관련성이 높은 순서로 제도 id만 정렬해 JSON {"order":["id", ...]} 으로 반환하라. 목록에 있는 id만 쓰고 새로 만들지 마라. 모든 id를 빠짐없이 포함하라. 설명 없이 JSON만.`;
+  const body = {
+    model,
+    messages: [{ role: 'system', content: sys }, { role: 'user', content: `[상황]\n${text}\n\n[후보 제도]\n${list}` }],
+    response_format: { type: 'json_object' },
+  };
+  if (isNewGen) { body.max_completion_tokens = 4000; body.reasoning_effort = 'low'; }
+  else { body.max_tokens = 2000; body.temperature = 0; }
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!res.ok) throw new Error(`openai ${res.status}`);
+  const data = await res.json();
+  const raw = data?.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('empty');
+  const parsed = JSON.parse(raw);
+  const order = Array.isArray(parsed.order) ? parsed.order.filter((x) => typeof x === 'string') : [];
+  return order.length ? order : null;
+}
